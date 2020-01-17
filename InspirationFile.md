@@ -29,4 +29,4 @@ A clustering algorithm is used to identify properties that match the user’s dr
 *	Scraping Zillow data is against that website’s terms of use, we could use other data sources (such as Melbourne housing dataset from Kaggle), but we might be limited to a static dataset.
 *	The differentiator between what websites like Zillow already provide would be the clustering algorithm.
 
-
+***********************************************************
