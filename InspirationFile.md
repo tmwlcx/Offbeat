@@ -10,8 +10,8 @@ Project Idea: <b>Dream Home</b>
 
 The user inputs features of their dream home: 
 * Property Type: Single Family House, Townhome, Flat, etc.
-* # bedrooms
-*	# bathrooms
+* No. bedrooms
+*	No. bathrooms
 *	Other features: e.g., pool, attached garage, large lot, in-home planetarium, etc.
 
 The user also inputs their desired location and a price ceiling
