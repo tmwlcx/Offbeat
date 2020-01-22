@@ -32,7 +32,7 @@ A clustering algorithm is used to identify properties that match the user’s dr
 ***********************************************************
 Name: Waverly
 
-Projece Idea: <b>Musical Map</b>
+Project Idea: <b>Musical Map</b>
 
 Spotify "Wrapped 2019" was a big deal in 2019 as people were able to see and share metrics on their music listening patterns over the past year and decade (my instagram was saturated with people sharing their top 10 artists, songs and albums). I think people got excited when they saw a visually stunning tool tell a personal story about them using their own data.
 
@@ -48,3 +48,5 @@ We could do clustering given a user's spotify creds (so we would see their liste
 <u>Cons</u>:
 * This idea is still pretty open ended. We could structure this a few different ways, which means more discussion/work on defining the problem/product
 * I can't tell if this is a tool that only I would want to use... maybe most people _don't_ want to discover music that is super different from what they already listen to!
+
+***********************************************************
