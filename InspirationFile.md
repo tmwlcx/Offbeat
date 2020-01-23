@@ -1,9 +1,5 @@
 Add your Name, List and explain your idea for a project:
 
-
-Add your Name, List and explain your idea for a project:
-
-
 Tyler Inness : The Git Map
  
 The User can provide a link to a github repo.
