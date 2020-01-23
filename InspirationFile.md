@@ -34,6 +34,8 @@ Name: Waverly
 
 Project Idea: <b>Musical Map</b>
 
+[Video on this concept](https://youtu.be/uIKSIf9p2ZI) (skip to 6:47 to hear him explain what I'm talking about)
+
 Spotify "Wrapped 2019" was a big deal in 2019 as people were able to see and share metrics on their music listening patterns over the past year and decade (my instagram was saturated with people sharing their top 10 artists, songs and albums). I think people got excited when they saw a visually stunning tool tell a personal story about them using their own data.
 
 In that vein, I think we could build a tool that highlights music that is really _different_ from what you typically listen to. <b>I think people would be intrigued by an interactive tool that tells them a story about what music they might be missing out on!</b> There are _so_ many recommendation engines that push music at you that all starts to sound the same... Our tool would help people discover new sounds/artists/genres that they might otherwise never find.
