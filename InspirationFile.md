@@ -1,8 +1,43 @@
 Add your Name, List and explain your idea for a project:
 
 
-Tyler Inness : The Complicated Thing
-  Will write about it later
+Add your Name, List and explain your idea for a project:
+
+
+Tyler Inness : The Git Map
+ 
+The User can provide a link to a github repo.
+
+ The GitMap shows a big map of all the .py files in Github (Or some substantial portion of them) in a giant graph. It also lets a user, add themselves to the GitMap. When a user provides a repo location:
+
+The Git Mapper scans the repo and finds:
+ * Library Imports
+ * class and function definitions
+ * imported function calls
+ * class method usages
+ 
+ It then scans the resulting list of libraries (Imports) for the same dependencies, terminating when it hits rock bottom (No further unmapped dependencies).
+ During this process it maintains a directed edge list and iterates it when a dependency is found, each time iterating until it reaches the bottom of the stack.
+ 
+ At the end, it displays a graph with libraries, classes, and functions as nodes, with their sizes calculated by the inweight, and all their dependencies mapped. This tells you which libraries or modules within github or the standard library your project is the most dependent on. It also shows downstream functions, classes and module names you may be overwriting.
+ 
+ <u>pros</u>
+ * Looks Badass
+ * Graphz is Cool
+ * I have already written a decent chunk of the python because I got excited and wanted to do it anyways
+ * Github is ubiquitous so a project showing proficiency with it, and .py files would look GUD
+ 
+<u>cons</u>
+ * requires an existing map of the standard library and some major imports. Otherwise it needs to be able to find libraries on github independently
+ * some regular expressions (ewww...)
+ * May need to figure out how to clone repos while mapping them?
+ * May not count as big data? Python files are usually measured in the KB to MB range, and most libraries are small flat text files. It is however, Semi-structured text.
+ * Python interpretor already does some of this, but doesn;t show a graph, and graphs are cool.
+ 
+ Other info....
+ * Highly Optimizable with multithreading.
+ * Could potentially use a student version of Google Bigquery to host data and run multithreaded python instances.
+ * Maybe make it toggleable to show the whole gitmap, or justy the libraries that matter to the user?
 
 ***********************************************************
 Name: Tim
