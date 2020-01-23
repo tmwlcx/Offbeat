@@ -58,6 +58,8 @@ Project Idea: <b>Political Canvassing Map</b>
 
 _Political canvassing_ is the systematic initiation of direct contact with individuals in order to deliver a political message and encourage actions such as voting.  For many elections, this is done by knocking on doors and talking to individuals directly.  Many political campaigns have limited resources and as a result need to efficiently reach voters that are most likely to support their candidate.  Using pubically available voter data, a map can be constructed to show the largest clusters of receptive voters.  A campaign now has a roadmap of areas to canvas where they expect to get the most engagement and make the best use of their resources.
 
+I would envision this tool being used for a relatively small geographic area, such as a town or small city.  For a large city like NYC, this would probably only work for a single borough or even a portion of a borough.  For too large of an area, the usage of this tool would be impractical.
+
 Additionally, this system could be fine tuned to provide a specialized roadmap based on demographic information.  For instance, specific clusters could be generated based on voters that are over 60 years old as part of a specific canvassing effort to highlight that a specific candidate is supportive of Social Security.  This could also be further refined to use some type of shortest path algorithm to instruct the end users the most efficient way to cover territory within a given cluster.
 
 Here is an example of the data available:
