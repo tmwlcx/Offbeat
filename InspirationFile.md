@@ -83,3 +83,27 @@ Project Requirements:
 * In practice, the shortest path algorithm could be messy.  It might be hard to account for one way streets, traffic, etc
 * Clustering algorithm might not provide a ton of new value.  What if it just points you to the most populous areas?
 ***********************************************************
+
+Name: Drew
+
+Project Idea: <b>Twitter Election Results</b>
+
+I'm personally really interested in applying NLP techniques to understand sentiment and track patterns. I think it would be an interesting challenge to gather tons of Twitter data from around the US (maybe state by state) to see if any factors in the data are predictive of election results. For example: does Twitter sentiment & content in a given area predict election results at all? And can historical data be normalized against current data to provide insight into the next election cycle?
+
+Given that Twitter never stops generating data, we could potentially explore building a front end that continues to update with new data regularly; it wouldn't have to simply query a static DB that we built somewhere.
+
+Project Requirements:
+1. Big Data - check
+2. Analytics Models - NLP, regression, time series
+3. Interactive front end - lots of directions that we could go with it! map-based is a logical choice; could potentially work personalization into this as well to let the user see data relevant to their location; could also go with the real-time aspect to provide a very interesting & interactive UI
+
+<u>Pros</u>:
+* Certainly meets the "big data" requirement
+* Potential to be incredibly impactful depending on what we find
+* Lots of directions that we could go with it!
+
+<u>Cons</u>:
+* Lots of directions that we could go with it!
+* Has probably been researched a ton already ... so we may not actually do anything new or interest anyone with this
+
+***********************************************************
