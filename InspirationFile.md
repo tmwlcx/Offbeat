@@ -50,3 +50,33 @@ We could do clustering given a user's spotify creds (so we would see their liste
 * I can't tell if this is a tool that only I would want to use... maybe most people _don't_ want to discover music that is super different from what they already listen to!
 
 ***********************************************************
+
+***********************************************************
+Name: Jeff
+
+Project Idea: <b>Political Canvassing Map</b>
+
+_Political canvassing_ is the systematic initiation of direct contact with individuals in order to deliver a political message and encourage actions such as voting.  For many elections, this is done by knocking on doors and talking to individuals directly.  Many political campaigns have limited resources and as a result need to efficiently reach voters that are most likely to support their candidate.  Using pubically available voter data, a map can be constructed to show the largest clusters of receptive voters.  A campaign now has a roadmap of areas to canvas where they expect to get the most engagement and make the best use of their resources.
+
+Additionally, this system could be fine tuned to provide a specialized roadmap based on demographic information.  For instance, specific clusters could be generated based on voters that are over 60 years old as part of a specific canvassing effort to highlight that a specific candidate is supportive of Social Security.  This could also be further refined to use some type of shortest path algorithm to instruct the end users the most efficient way to cover territory within a given cluster.
+
+Here is an example of the data available:
+[https://www.pavoterservices.pa.gov/Pages/PurchasePAFULLVoterExport.aspx]
+Fields available:
+voter ID number, name, sex, date of birth, date registered, status (i.e., active or inactive), date status last changed, party, residential address, mailing address, polling place, date last voted, all districts in which the voter votes (i.e., congressional, legislative, school district, etc.), voter history, and date the voter’s record was last changed.
+
+Project Requirements:
+1. Big Data - there are millions of registered voters so plenty of data to draw from.
+2. Analytics Models - K means clustering and shortest path algorithms could potentially be used
+3. Interactive front end - Provide a map that can be tweaked based on certain demographics markers (under 35, over 60, income level, etc).  Click on a cluster to zoom in and provide naviagtion instructions.
+
+
+<u>Pros</u>:
+* Lot's of data to work with - counties typically provide a downloadable csv file of voter registration data.
+* Easy to visualize - the data comes with addresses so we can easily create our own maps
+* It is an election year, so this is a topic that is on people's minds
+
+<u>Cons</u>:
+* In practice, the shortest path algorithm could be messy.  It might be hard to account for one way streets, traffic, etc
+* Clustering algorithm might not provide a ton of new value.  What if it just points you to the most populous areas?
+***********************************************************
