@@ -86,11 +86,11 @@ Project Requirements:
 
 Name: Drew
 
-Project Idea: <b>Twitter Election Results</b>
+Project Idea: <b>Twitter Election Pulse</b>
 
 I'm personally really interested in applying NLP techniques to understand sentiment and track patterns. I think it would be an interesting challenge to gather tons of Twitter data from around the US (maybe state by state) to see if any factors in the data are predictive of election results. For example: does Twitter sentiment & content in a given area predict election results at all? And can historical data be normalized against current data to provide insight into the next election cycle?
 
-Given that Twitter never stops generating data, we could potentially explore building a front end that continues to update with new data regularly; it wouldn't have to simply query a static DB that we built somewhere.
+Given that Twitter never stops generating data we could potentially explore building a front end that continues to update with new data regularly; it wouldn't have to simply query a static DB that we built somewhere.
 
 Project Requirements:
 1. Big Data - check
