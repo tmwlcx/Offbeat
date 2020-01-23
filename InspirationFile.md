@@ -53,7 +53,6 @@ We could do clustering given a user's spotify creds (so we would see their liste
 
 ***********************************************************
 
-***********************************************************
 Name: Jeff
 
 Project Idea: <b>Political Canvassing Map</b>
