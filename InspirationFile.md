@@ -65,6 +65,8 @@ Name: Waverly
 
 Project Idea: <b>Musical Map</b>
 
+[Blog on boring music guy](https://towardsdatascience.com/is-my-spotify-music-boring-an-analysis-involving-music-data-and-machine-learning-47550ae931de)
+
 [Video on this concept](https://youtu.be/uIKSIf9p2ZI) (skip to 6:47 to hear him explain what I'm talking about)
 
 Spotify "Wrapped 2019" was a big deal in 2019 as people were able to see and share metrics on their music listening patterns over the past year and decade (my instagram was saturated with people sharing their top 10 artists, songs and albums). I think people got excited when they saw a visually stunning tool tell a personal story about them using their own data.
