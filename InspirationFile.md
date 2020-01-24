@@ -1,4 +1,4 @@
-<b>[Take the Survey!](https://www.surveymonkey.com/r/P5P26V8)</b>
+<b>[Vote for your two favorite!](https://www.surveymonkey.com/r/P5P26V8)</b>
 
 ***********************************************************
 
