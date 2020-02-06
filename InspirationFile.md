@@ -144,4 +144,12 @@ Project Requirements:
 * Lots of directions that we could go with it!
 * Has probably been researched a ton already ... so we may not actually do anything new or interest anyone with this
 
+<u>Articles (needed for project proposal)</u>:
+Detecting fake content:
+ * [Fake images](https://dl.acm.org/doi/abs/10.1145/2487788.2488033)
+ * [Bot accounts](https://www.liebertpub.com/doi/abs/10.1089/big.2017.0038)
+ * [Another fake account paper](https://ieeexplore.ieee.org/abstract/document/8093420)
+ 
+* [Social media and politcal polarization (network analysis)](https://www.aaai.org/ocs/index.php/ICWSM/ICWSM11/paper/viewPaper/2847) & [another one](https://www.sciencedirect.com/science/article/pii/S0740624X16300375)
+
 ***********************************************************
