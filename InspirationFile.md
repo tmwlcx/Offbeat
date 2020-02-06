@@ -145,6 +145,7 @@ Project Requirements:
 * Has probably been researched a ton already ... so we may not actually do anything new or interest anyone with this
 
 <u>Articles (needed for project proposal)</u>:
+
 Detecting fake content:
 
  * [Fake images](https://dl.acm.org/doi/abs/10.1145/2487788.2488033)
