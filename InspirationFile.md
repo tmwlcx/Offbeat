@@ -146,6 +146,7 @@ Project Requirements:
 
 <u>Articles (needed for project proposal)</u>:
 Detecting fake content:
+
  * [Fake images](https://dl.acm.org/doi/abs/10.1145/2487788.2488033)
  * [Bot accounts](https://www.liebertpub.com/doi/abs/10.1089/big.2017.0038)
  * [Another fake account paper](https://ieeexplore.ieee.org/abstract/document/8093420)
