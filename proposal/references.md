@@ -11,7 +11,7 @@
 <b>Project: Political Canvassing</b>
 1.	Grimmer, J. (2015). We Are All Social Scientists Now: How Big Data, Machine Learning, and Causal Inference Work Together. PS: Political Science & Politics, 48(1), 80-83. doi:10.1017/S1049096514001784
 
-<\t>TL;DR: For data scientists to draw effective conclusions when using machine learning to perform causal inference, they must collaborate heavily with those having domain knowledge of social science. 
+<t>TL;DR: For data scientists to draw effective conclusions when using machine learning to perform causal inference, they must collaborate heavily with those having domain knowledge of social science. 
 
 2.	Fieldhouse, E., & Cutts, D. (2009). The Effectiveness of Local Party Campaigns in 2005: Combining Evidence from Campaign Spending and Agent Survey Data. British Journal of Political Science, 39(2), 367-388. doi:10.1017/S0007123409000726
 
