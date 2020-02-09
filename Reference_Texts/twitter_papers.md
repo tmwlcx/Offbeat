@@ -3,6 +3,7 @@
 1. [Mapping Twitter Topic Networks: From Polarized Crowds to Community Clusters](http://www.academia.edu/download/36134639/Mapping_Twitter_networks_-_final.docx)
 
 Summary:  ...but Polarized Crowds are not the only way that people gather on Twitter. There are at least six distinct types of conversations on Twitter based on the structure of people’s networks, the subjects and content sources that matter to them, and the way they interact. These networks have different structures that reflect the social activity within them: divided, unified, scattered, clustered, and inward and outward hub and spokes.
+
 (this is a striking visual project/paper that maps out different conversation archetypes on Twitter)
 
 2. [Echo Chamber or Public Sphere? Predicting Political Orientation and Measuring Political Homophily in Twitter Using Big Data](https://academic.oup.com/joc/article-abstract/64/2/317/4085994)
