@@ -22,3 +22,7 @@ The authors use campaign spending as a key indicator—I am not aware of anywher
 5.	Aral, S., & Walker, D. (2012). <u>Identifying Influential and Susceptible Members of Social Networks.</u> Science. 337(6092), 337-341. DOI: 10.1126/science.1215842
 
 ><b>TL;DR</b>: The authors argue individual susceptibility is a much more powerful peer effect than influence. They use a hazard model to illustrate social contagion between different combinations of gender, age group, and other factors. 
+
+6.	Rezaei, Mohamamd. (2018). Real-Time Clustering of Large Geo-Referenced Data for Visualizing on Map. Advances in Electrical and Computer Engineering. 18. 63-74. 10.4316/AECE.2018.04008. 
+
+<b>TL;DR</b>: A proposed system for scalable visualization of geographic clustering.
