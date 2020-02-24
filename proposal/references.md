@@ -9,3 +9,23 @@
 ---
 
 
+@article{doi:10.1162/0148926041790630,
+author = {Tsai, Wei-Ho and Rodgers, Dwight and Wang, Hsin-Min},
+title = {Blind Clustering of Popular Music Recordings Based on Singer Voice Characteristics},
+journal = {Computer Music Journal},
+volume = {28},
+number = {3},
+pages = {68-78},
+year = {2004},
+doi = {10.1162/0148926041790630},
+
+URL = { 
+        https://doi.org/10.1162/0148926041790630
+    
+},
+eprint = { 
+        https://doi.org/10.1162/0148926041790630
+    
+}
+
+}
