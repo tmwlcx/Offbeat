@@ -19,4 +19,19 @@
 
 >Tsai, W.-H., Rodgers, D., & Wang, H.-M. (2004). Blind Clustering of Popular Music Recordings Based on Singer Voice Characteristics. Computer Music Journal, 28(3). doi:10.1162/0148926041790630. https://doi.org/10.1162/0148926041790630
 
+# Technical paper, not peer reviewed
+>Kazunori Sato (Google (2012). An Inside Look at Google BigQuery. https://cloud.google.com/files/BigQueryTechnicalWP.pdf
 
+# Found this, references our DBMS text book last year, but was added after the physical print, so I included the link I found it at
+Elmasri, R., & Navathe, S. (2016). Fundamentals of database systems (Seventh ed.). https://sceweb.sce.uhcl.edu/helm/DataBaseSystems/References/AppendixD.pdf
+
+# Not Peer reviewed, but very useful so vote?
+Müllner, D. (2011). Modern hierarchical, agglomerative clustering algorithms. https://arxiv.org/pdf/1109.2378.pdf
+
+
+
+# Useful references, maybe not useable?
+https://www.sqlservercentral.com/articles/hierarchies-on-steroids-1-convert-an-adjacency-list-to-nested-sets
+
+Handy little overview of clustering methods
+http://www.ijcsit.com/docs/Volume%205/vol5issue06/ijcsit2014050688.pdf
