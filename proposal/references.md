@@ -36,7 +36,7 @@ https://www.sqlservercentral.com/articles/hierarchies-on-steroids-1-convert-an-a
 Handy little overview of clustering methods
 http://www.ijcsit.com/docs/Volume%205/vol5issue06/ijcsit2014050688.pdf
 
-*Whitepaper - AWS Datawarehousing with Redshift*
+**Whitepaper - AWS Datawarehousing with Redshift**
 
 http://d0.awsstatic.com/whitepapers/enterprise-data-warehousing-on-aws.pdf
 
