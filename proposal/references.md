@@ -45,3 +45,14 @@ http://d0.awsstatic.com/whitepapers/enterprise-data-warehousing-on-aws.pdf
 * Cons - Does not support data access via API.  This will need to be handled via other tech layers.  Not ideal for quickly serving database to a web application.
 
 * Summary - Useful for pre-storing clusters, but may not be ideal for serving data to our front end quickly for visualization.  This often requires a second database layer (Postgressql) which adds an unneccsary amount of complexity.
+
+**Data stream clustering by divide and conquer approach based on vector model**
+
+Khalilian, M., Mustapha, N. & Sulaiman, N. Data stream clustering by divide and conquer approach based on vector model. Journal of Big Data 3, 1 (2016). https://doi.org/10.1186/s40537-015-0036-x
+
+* Pros - Increased clustering quality and performance as compare to traditional methods.
+
+* Cons - A novel approach to clustering adds complexity to the process.  Also there may not be an existing R or Python package for this, requiring additional custom code to be built.
+
+* Summary - The divide and conquer approach uses a vector model and k-means divide a conquer approach to overcome some of the shortcomings of other data stream clustering solutions.
+
