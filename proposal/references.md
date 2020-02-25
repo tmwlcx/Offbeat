@@ -28,7 +28,8 @@ Elmasri, R., & Navathe, S. (2016). Fundamentals of database systems (Seventh ed.
 # Not Peer reviewed, but very useful so vote?
 Müllner, D. (2011). Modern hierarchical, agglomerative clustering algorithms. https://arxiv.org/pdf/1109.2378.pdf
 
-
+# On recommendation engine algorithms (collaborative filtering and such): 
+https://ebookcentral.proquest.com/lib/gatech/reader.action?docID=1884200&query=music+recommendation+engines#
 
 # Useful references, maybe not useable?
 https://www.sqlservercentral.com/articles/hierarchies-on-steroids-1-convert-an-adjacency-list-to-nested-sets
@@ -56,3 +57,11 @@ Khalilian, M., Mustapha, N. & Sulaiman, N. Data stream clustering by divide and 
 
 * Summary - The divide and conquer approach uses a vector model and k-means divide a conquer approach to overcome some of the shortcomings of other data stream clustering solutions.
 
+
+**Visualization Stuff**
+
+* Data Visualization with d3.js
+https://ebookcentral.proquest.com/lib/gatech/detail.action?docID=1389320
+
+* Data Science for Dummies (when to use d3.js and how to choose your visualization type)
+https://ebookcentral.proquest.com/lib/gatech/reader.action?docID=4812516&ppg=7
