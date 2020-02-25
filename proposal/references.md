@@ -40,6 +40,8 @@ http://www.ijcsit.com/docs/Volume%205/vol5issue06/ijcsit2014050688.pdf
 
 http://d0.awsstatic.com/whitepapers/enterprise-data-warehousing-on-aws.pdf
 
-Pros - fast, scalable and accessible datawarehousing.  Useful for analytical purposes and can be queried via SQL like syntax (no need to learn new technology).
-Cons - Does not support data access via API.  This will need to be handled via other tech layers.  Not ideal for quickly serving database to a web application.
-Summary - Useful for pre-storing clusters, but may not be ideal for serving data to our front end quickly for visualization.  This often requires a second database layer (Postgressql) which adds an unneccsary amount of complexity.
+* Pros - fast, scalable and accessible datawarehousing.  Useful for analytical purposes and can be queried via SQL like syntax (no need to learn new technology).
+
+* Cons - Does not support data access via API.  This will need to be handled via other tech layers.  Not ideal for quickly serving database to a web application.
+
+* Summary - Useful for pre-storing clusters, but may not be ideal for serving data to our front end quickly for visualization.  This often requires a second database layer (Postgressql) which adds an unneccsary amount of complexity.
