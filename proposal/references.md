@@ -57,6 +57,15 @@ Khalilian, M., Mustapha, N. & Sulaiman, N. Data stream clustering by divide and 
 
 * Summary - The divide and conquer approach uses a vector model and k-means divide a conquer approach to overcome some of the shortcomings of other data stream clustering solutions.
 
+**Cluster analysis and display of genome-wide expression patterns**
+
+* Pros - Allows for more flexibility than typical clustering methods and lends itsself well to visualization via dendrograms.
+
+* Cons - Can be more difficult to implement on a larger dataset due to higher time complexity of processing the algorithm.  Also, on a larger dataset the dendrograms can become overwhelmingly divided into to many levels.
+
+* Summary - Example of the use of hierarchial expression to cluster various combinations of genetic factors.  This method allowed the researchers to find patterns in the data such as clusters of redundant representations of genes and genes of similar function.
+
+Michael B. Eisen, Paul T. Spellman, Patrick O. Brown, David Botstein Proceedings of the National Academy of Sciences Dec 1998, 95 (25) 14863-14868;
 
 **Visualization Stuff**
 
