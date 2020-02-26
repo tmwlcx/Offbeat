@@ -1,0 +1,46 @@
+Bottom-up fullstack description of the solution:
+1.	Analytics
+2.	Storage / Django Model API
+3.	Simple Django Server
+4.	D3 Visuals
+
+
+Analytics:
+See Tim’s agglomerative clustering workup
+There is not currently any plan to consider albums separately, but rather we will consider the entire body of an artist’s work. The output of our analytics will take songs and generate base clusters of approximately 80-100 songs. There are methods we can use to explore clustering of larger sets if time were a concern, but because we are precomputing it may not be necessary. We aim to have a couple million songs clustered using agglomerative clustering. Each cluster step generates an assignment for each song. 
+
+Storage:
+	Currently two cloud storage platforms are being considered, with Google Cloud leading Azure. This cloud solution will need three components: Storage (SQL Database), WebApp Hosting, and a virtual machine that can hold server and analytics infrastructure.
+	The SQL database will store precomputed values from the analytics. Items that will need precomputation and storage are: Artist tables, song tables, clustering intermediaries. 
+Artist and song tables will store raw data. Clustering intermediaries will get generated at each chosen storage center.
+	Feature 1	Feature 2	Features Etc…
+Song Hash			
+
+Clustering Intermediaries:
+First is the song cluster assignments - This is stored in a table that is NxC records in size, where n is the number of songs and c is the number of clusters. 
+	Assignment at Cluster 1	Assignment at Cluster 2	3	4	Etc…
+Song Hash					
+
+Then there is the cluster center storage table. Each record is a hash that represents the cluster center at that step, it’s values , and it’s parent.
+	Clustering Step	Features 1-Etc..	Cluster Parent
+Cluster		(In multiple Columns)	
+
+Between these two tables, a recursive tree search can be made that searches up and down a tree a random number of steps, without requiring actual recursion..
+These tables will be access via a set of Django functions that run pre-canned queries. Queries that will be needed are:
+1.	Search for matching cluster of a song. This performs a walk down the cluster tree, searching each cluster step for the closest matching child, and using it as the parent at the next level.
+2.	Search for random cluster. This takes the value from the slider, search’s up the clusters call line until hitting that cluster step, then follows a random path back down, not repeating any previously used parent clusters.
+3.	Cluster pull. Each displayed cluster will have an associated key, when it is clicked, that cluster will need to be searched to find parents outside the current set. This will also recompute the differences in the visualized nodes so they can be colored and sized based on variances from the currently selected node.
+Server:
+	Django will be used so that data can be cleaned with Python after SQL queries are returned, and data proffered to the front end. THIS is a RISK, as no one is experienced with interfacing d3.js and Django, so it will require work. The actual Django work required should be minimal
+
+D3. Visuals
+
+	imagine you are holding a cluster of grapes over a sheet of paper. as you lower the grapes, they pass through the paper. however, to you, only the parts intersecting the paper are visible. That page of paper is our 2d visualization. when we pick a song, we are picking a grape at the bottom, and as we move up the tree, we are lowering the grapes further into the paper and moving up the stem... all those individual clusters disappear and we only see the stem they are attached to...
+as we bounce up and down the stem, from one end of the tree to the other, we are visualizing moving that cluster up and down through the 2D imagine.
+
+As for the first thing they will see, it will be either the option to provide their spotify username, or a song name, etc... No tree visualization to start. We have to start from no data. They enter something, and we ping server, server runs SQL query, formats return values, sends to front end. front end shows clustered circles for the cluster and nearest neighboring clusters, and then maybe says how many other clusters are nearby... the neighboring clusters show no songs, and the one they are in shows circles for all the contained songs, sized by popularity and colored maybe by closeness of match? They can then click neighboring cluster circles to move laterally and scroll this image between clusters...
+
+or use a slider to go crazy, and jump a few steps up and down the tree. so select 1-7 as distance to jump, and we do a random walk up and down the tree a certain distance, and return them to a random cluster that shows the same vis, with the neat up and down the tree visual of circles merging into one and breaking into more detail as we move up and down
+
+
+
