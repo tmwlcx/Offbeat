@@ -67,6 +67,15 @@ Khalilian, M., Mustapha, N. & Sulaiman, N. Data stream clustering by divide and 
 
 Michael B. Eisen, Paul T. Spellman, Patrick O. Brown, David Botstein Proceedings of the National Academy of Sciences Dec 1998, 95 (25) 14863-14868;
 
+**Principal Components Analysis**
+
+* Pros - helps removes correlated features and reduce the number of dimensions.  This step is key given that this model needs to be visualized and it is hard to visualize with many dimensions.  Also, hierarchical clustering is computationally intensive and will perform better with less features.
+
+* Cons - using principal components instead of features, the data can seem less readable and more difficult to interpret.  
+
+* Summary - A popular and well known approach for deriving a lower number of features from a larger set of attributes.
+
+Data Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani. An Introduction to Statistical Learning : with Applications in R. New York :Springer, 2013. Chapter 10 373-414
 **Visualization Stuff**
 
 * Data Visualization with d3.js
