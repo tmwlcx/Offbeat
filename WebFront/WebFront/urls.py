@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from WebFront import views
+
 urlpatterns = [
+    path('', views.shout, name='basicallyahelloworld'),
     path('admin/', admin.site.urls),
 ]
