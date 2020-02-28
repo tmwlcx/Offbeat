@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-import sqlite3
 import pandas as pd
 import sqlalchemy
 
