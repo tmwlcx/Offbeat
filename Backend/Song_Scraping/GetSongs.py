@@ -88,12 +88,12 @@ for artist_uri in artist_uris:
                         valence, tempo
                     ]
 
-            sql = f''' INSERT INTO song(song_id, song_name, artist_id, album_id, 
+            sql = ''' INSERT INTO song(song_id, song_name, artist_id, album_id, 
                                         track_href, duration_ms, danceability, energy, 
                                         musical_key, loudness, mode, speechiness, acousticness, 
                                         instrumentalness, liveness, valence, tempo)
                       SELECT ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?
-                      WHERE NOT EXISTS(SELECT 1 FROM song WHERE song_id = '{song_id}');'''
+                      WHERE NOT EXISTS(SELECT 1 FROM song WHERE song_id = '{}');'''.format(song_id)
             cur = conn.cursor()
             cur.execute(sql, song)
             conn.commit()
