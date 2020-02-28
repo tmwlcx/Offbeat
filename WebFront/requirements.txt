@@ -1,0 +1,1 @@
+# Google Cloud Requirements file for testing in virtual environment
