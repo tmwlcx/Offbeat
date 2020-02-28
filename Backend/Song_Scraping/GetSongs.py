@@ -39,9 +39,9 @@ for artist_uri in artist_uris:
 
         album = [album_id, artist_id, album_name, 'spotify:album:'+album_id]
 
-        sql = f''' INSERT INTO album(album_id,artist_id,album_name,album_uri)
+        sql = ''' INSERT INTO album(album_id,artist_id,album_name,album_uri)
                   SELECT ?,?,?,? 
-                  WHERE NOT EXISTS(SELECT 1 FROM album WHERE album_id = '{album_id}');'''
+                  WHERE NOT EXISTS(SELECT 1 FROM album WHERE album_id = '{}');'''.format(album_id)
         cur = conn.cursor()
         cur.execute(sql, album)
         conn.commit()
