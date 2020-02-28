@@ -1,13 +1,13 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-import sqlite3
+import pymysql
 import config
 
 input_file = ''
 
-conn = sqlite3.connect("Spotify.db")
+conn = pymysql.connect('127.0.0.1', 'teameleven', 'dbpassword', 'SPOTIFY')
 cur = conn.cursor()
-sql = "select uri from artist where id not in (select artist_id from album) ORDER BY uri;"
+sql = "select artist_uri from artist where artist_id not in (select artist_id from album) ORDER BY artist_uri;"
 
 cur.execute(sql)
 
@@ -22,6 +22,7 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 for artist_uri in artist_uris:
     print(artist_uri)
+    print(len(artist_uri))
     albums = sp.artist_albums(artist_uri)
 
     # If nothing is returned from search, skip
@@ -32,7 +33,6 @@ for artist_uri in artist_uris:
     albums = [(album['id'], album['name']) for album in albums['items']][:10]
     print(albums)
     for album in albums:
-        print(artist_uri)
         artist_id = artist_uri.split(':')[-1]
         album_id = album[0]
         album_name = album[1]
@@ -66,8 +66,10 @@ for artist_uri in artist_uris:
                 print('break')
                 continue
 
+            duration_ms = audio_feature['duration_ms']
+            track_href = audio_feature['track_href']
             danceability = audio_feature['danceability']
-            key = audio_feature['key']
+            musical_key = audio_feature['key']
             energy = audio_feature['energy']
             loudness = audio_feature['loudness']
             mode = audio_feature['mode']
@@ -79,17 +81,18 @@ for artist_uri in artist_uris:
             tempo = audio_feature['tempo']
 
             song =  [
-                        song_id, artist_id, album_id,
-                        danceability, energy, key,
+                        song_id, song_name, artist_id, album_id,
+                        track_href, duration_ms, energy, musical_key,
                         loudness, mode, speechiness,
                         acousticness, instrumentalness, liveness,
                         valence, tempo
                     ]
 
-            sql = f''' INSERT INTO song(song_id, artist_id, album_id, danceability, energy,
-                                        key, loudness, mode, speechiness, acousticness, 
+            sql = f''' INSERT INTO song(song_id, song_name, artist_id, album_id, 
+                                        track_href, duration_ms, danceability, energy, 
+                                        musical_key, loudness, mode, speechiness, acousticness, 
                                         instrumentalness, liveness, valence, tempo)
-                      SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                      SELECT ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?
                       WHERE NOT EXISTS(SELECT 1 FROM song WHERE song_id = '{song_id}');'''
             cur = conn.cursor()
             cur.execute(sql, song)
