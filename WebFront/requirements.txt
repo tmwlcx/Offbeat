@@ -1,1 +1,2 @@
 # Google Cloud Requirements file for testing in virtual environment
+Django==3.0.3
