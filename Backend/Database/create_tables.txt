@@ -1,0 +1,40 @@
+DELIMITER $$
+
+CREATE TABLE IF NOT EXISTS artist (
+    artist_id CHAR(22) PRIMARY KEY,
+    artist_name VARCHAR(250),
+    artist_uri CHAR(37),
+    followers INT
+);
+
+CREATE TABLE IF NOT EXISTS album (
+    album_id CHAR(22) PRIMARY KEY,
+    artist_id CHAR(22),
+    album_name VARCHAR(500),
+    album_uri CHAR(37)
+);
+
+CREATE TABLE IF NOT EXISTS song (
+    song_id CHAR(22) PRIMARY KEY,
+    song_name VARCHAR(500),
+    artist_id CHAR(22),
+    album_id CHAR(22),
+    track_href CHAR(56),
+    duration_ms INT,
+    time_signature INT,
+    danceability DECIMAL(10, 6),
+    energy DECIMAL(10, 6), 
+    musical_key INT,
+    loudness DECIMAL(10, 6), 
+    mode INT,
+    speechiness DECIMAL(10, 6),
+    acousticness DECIMAL(10, 6),
+    instrumentalness DECIMAL(10, 6),
+    liveness DECIMAL(10, 6), 
+    valence DECIMAL(10, 6), 
+    tempo DECIMAL(10, 6)
+);
+
+$$
+
+DELIMITER ;
