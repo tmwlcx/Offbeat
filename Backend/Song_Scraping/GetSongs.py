@@ -39,8 +39,8 @@ for artist_uri in artist_uris:
 
         album = (album_id, artist_id, album_name, 'spotify:album:'+album_id, album_id)
 
-        sql = ''' INSERT INTO album(album_id,artist_id,album_name,album_uri)
-                  SELECT (%s,%s,%s,%s)
+        sql = ''' INSERT INTO album(album_id,artist_id,album_name,album_uri) 
+                  SELECT (%s,%s,%s,%s) 
                   WHERE NOT EXISTS(SELECT 1 FROM album WHERE album_id = %s);'''
         cur = conn.cursor()
         cur.execute(sql, album)
@@ -92,7 +92,7 @@ for artist_uri in artist_uris:
                                         track_href, duration_ms, danceability, energy, 
                                         musical_key, loudness, mode, speechiness, acousticness, 
                                         instrumentalness, liveness, valence, tempo)
-                      SELECT %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s
+                      SELECT %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s 
                       WHERE NOT EXISTS(SELECT 1 FROM song WHERE song_id = %s);'''
             cur = conn.cursor()
             cur.execute(sql, song)
