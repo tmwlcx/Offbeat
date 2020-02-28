@@ -50,7 +50,6 @@ for artist_uri in artist_uris:
             print('break')
             continue
 
-        print(album_tracks)
         for track in album_tracks['items']:
 
             song_uri = track['uri']
