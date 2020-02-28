@@ -5,7 +5,7 @@ import config
 
 input_file = ''
 
-conn = pymysql.connect('127.0.0.1', 'teameleven', 'dbpassword', 'SPOTIFY')
+conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY')
 cur = conn.cursor()
 sql = "select artist_uri from artist where artist_id not in (select artist_id from album) ORDER BY artist_uri;"
 
