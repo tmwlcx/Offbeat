@@ -37,11 +37,11 @@ for artist_uri in artist_uris:
         album_id = album[0]
         album_name = album[1]
 
-        album = [album_id, artist_id, album_name, 'spotify:album:'+album_id]
+        album = (album_id, artist_id, album_name, 'spotify:album:'+album_id, album_id)
 
         sql = ''' INSERT INTO album(album_id,artist_id,album_name,album_uri)
-                  SELECT ?,?,?,? 
-                  WHERE NOT EXISTS(SELECT 1 FROM album WHERE album_id = '{}');'''.format(album_id)
+                  SELECT (%s,%s,%s,%s)
+                  WHERE NOT EXISTS(SELECT 1 FROM album WHERE album_id = %s);'''
         cur = conn.cursor()
         cur.execute(sql, album)
         conn.commit()
@@ -80,20 +80,20 @@ for artist_uri in artist_uris:
             valence = audio_feature['valence']
             tempo = audio_feature['tempo']
 
-            song =  [
+            song =  (
                         song_id, song_name, artist_id, album_id,
                         track_href, duration_ms, energy, musical_key,
                         loudness, mode, speechiness,
                         acousticness, instrumentalness, liveness,
-                        valence, tempo
-                    ]
+                        valence, tempo, song_id
+                    )
 
             sql = ''' INSERT INTO song(song_id, song_name, artist_id, album_id, 
                                         track_href, duration_ms, danceability, energy, 
                                         musical_key, loudness, mode, speechiness, acousticness, 
                                         instrumentalness, liveness, valence, tempo)
-                      SELECT ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?
-                      WHERE NOT EXISTS(SELECT 1 FROM song WHERE song_id = '{}');'''.format(song_id)
+                      SELECT %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s
+                      WHERE NOT EXISTS(SELECT 1 FROM song WHERE song_id = %s);'''
             cur = conn.cursor()
             cur.execute(sql, song)
             conn.commit()
