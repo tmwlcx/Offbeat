@@ -1,2 +1,5 @@
 # Google Cloud Requirements file for testing in virtual environment
 Django==3.0.3
+sqlite3==11.13
+pandas==1.0.1
+sqlalchemy==1.3.13
