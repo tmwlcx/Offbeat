@@ -74,20 +74,20 @@ for artist_uri in artist_uris:
             liveness = audio_feature['liveness']
             valence = audio_feature['valence']
             tempo = audio_feature['tempo']
-
+            time_signature = audio_feature['time_signature']
             song =  (
                         song_id, song_name, artist_id, album_id,
                         track_href, duration_ms, danceability, energy, 
 			musical_key, loudness, mode, speechiness,
                         acousticness, instrumentalness, liveness,
-                        valence, tempo
+                        valence, tempo, time_signature
                     )
 
             sql = """ INSERT INTO song(song_id, song_name, artist_id, album_id, 
                                         track_href, duration_ms, danceability, energy, 
                                         musical_key, loudness, mode, speechiness, acousticness, 
-                                        instrumentalness, liveness, valence, tempo)
-                      VALUES (%s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s)"""
+                                        instrumentalness, liveness, valence, tempo, time_signature)
+                      VALUES (%s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s,%s,%s, %s,%s,%s)"""
             cur = conn.cursor()
             cur.execute(sql, song)
             conn.commit()
