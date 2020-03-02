@@ -3,8 +3,8 @@ import pandas as pd
 import pymysql
 
 def shout(request):
-    db = pymysql.connections.Connection('127.0.0.1', user='TeamEleven', password='dbpassword', database='SPOTIFY')  
+    conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY') 
 
-    artists = db.execute("select * from Artists LIMIT 10;")
+    artists = conn.execute("select * from Artists LIMIT 10;")
 
     return render(request, 'home.html', context={'table' : artists})
