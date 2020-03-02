@@ -14,6 +14,6 @@ def shout(request):
     cur.execute(sql)
     
     artists = cur.fetchall()
-    cur.close()
+    conn.commit()
 
     return render(request, 'home.html', context={'table' : artists})
