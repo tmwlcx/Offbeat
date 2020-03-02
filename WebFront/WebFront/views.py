@@ -7,6 +7,12 @@ import json
 def shout(request):
     conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY') 
 
-    artists = conn.execute("select * from artist LIMIT 10;")
+    cur = conn.cursor()
+
+    sql = "select * from artist LIMIT 10;"
+
+    cur.execute(sql)
+    
+    artists = cur.fetchall()
 
     return render(request, 'home.html', context={'table' : artists})
