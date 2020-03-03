@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 import pandas as pd
 import pymysql
+import sqlalchemy
 # transform data to json for sending to front end when using d3
 import json
 
