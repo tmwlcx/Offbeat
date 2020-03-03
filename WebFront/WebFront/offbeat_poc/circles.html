@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Offbeat POC</title>
+    <meta charset="utf-8">
+    <script src="../lib/d3.v5.min.js"></script>
+    <script src="../lib/d3-tip.min.js"></script>
+    <script src="../lib/d3-simple-slider.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="circles.css">
+</head>
+<body>
+
+    <h1>Offbeat POC</h1>
+    <div id="control-panel">
+        <div class="question">
+            <h4>How offbeat do you want to get?</h4>
+        </div>
+        <div class="sliders">
+            <div id="slider-offbeat"></div>
+        </div>
+        <div class="question">
+            <h4 style="margin-bottom:30px;">What features are important to you?</h4>
+        </div>
+        <div class="sliders">
+            <div>Energy</div>
+            <div id="slider-energy"></div>
+            <div>Acousticness</div>
+            <div id="slider-acousticness"></div>
+            <div>Danceability</div>
+            <div id="slider-danceability"></div>
+            <div>Instrumentalness</div>
+            <div id="slider-instrumentalness"></div>
+            <div>Valence</div>
+            <div id="slider-valence"></div>
+        </div>
+        <button onclick="drawGraph()">Explore</button>
+    </div>
+    <svg id="mychart" width="700" height="700"></svg>
+    <script src="circles.js"></script>
+</body>
+</html>
