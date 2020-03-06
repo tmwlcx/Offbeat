@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import Render
+from django.shortcuts import render
 import pandas as pd
 import pymysql
 import sqlalchemy
