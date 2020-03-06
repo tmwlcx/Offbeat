@@ -10,7 +10,6 @@ import os
 from django.conf import settings
 
 def shout(request):
-    
     try:
         conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY')
         cur = conn.cursor()
