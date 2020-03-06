@@ -33,7 +33,7 @@ def shout(request):
         conn.commit()
         
     except:
-        b = "Item one failed"
+        a = "Item one failed"
         try:
             conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY')
             cur = conn.cursor()
