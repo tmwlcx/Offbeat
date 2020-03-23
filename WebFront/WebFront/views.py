@@ -10,19 +10,6 @@ import os
 from django.conf import settings
 
 def shout(request):
-    try:
-        conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY')
-        cur = conn.cursor()
-
-        sql = "select * from artist LIMIT 10;"
-
-        cur.execute(sql)
-
-        artists = cur.fetchall()
-        conn.commit()
-    except:
-        pass
-
     return render(request, 'home.html')
 
 def Path_to_Data(request):
