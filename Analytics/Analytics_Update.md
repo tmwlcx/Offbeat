@@ -2,9 +2,11 @@ Analytics Update
 We are using agglomerative clustering which is a bottom-up form of hierarchical clustering. During our initial attempts, all 11 features were taken as-is (no transformations of the data, and all variables in the clustering model). Based on the groupings of songs that resulted from this raw approach, we felt that more was needed in the way of pre-processing the data. We visualized the song data in 2- and 3-Dimensions using principal component transformation and found a single tight cluster of data. We believe that a combination of approaches will assist us in "pulling apart" the more tightly grouped song data. Our approach to this is two-fold: first we perform feature selection, and second we transform the remaining features.
 
 We removed the following variables on the basis of correlation of variables and ability to transform:
+
 	* key (categorical),
 	* mode (boolean), and
 	* instramentalness (numeric).
+	
 Based on analysis of a smaller dataset, the removal of these features does not adversely impact the clustering. 
 
 We transform the remaining variables to Gaussian distribution, using **Quantile Transformation** or **Power Transformation**. Quantile transformation uses the following formula to place the features into a desired distribution: 
