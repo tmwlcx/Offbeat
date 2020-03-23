@@ -12,6 +12,9 @@ from django.conf import settings
 def shout(request):
     return render(request, 'home.html')
 
+def newvis(request):
+    return render(request, 'index.html')
+
 def Path_to_Data(request):
     path = os.path.join(settings.BASE_DIR, r"static/test_songs_sample_1k.json")
     data = json.loads(open(path).read())
