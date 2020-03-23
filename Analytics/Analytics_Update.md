@@ -3,9 +3,9 @@ We are using agglomerative clustering which is a bottom-up form of hierarchical 
 
 We removed the following variables on the basis of correlation of variables and ability to transform:
 
-	* key (categorical),
-	* mode (boolean), and
-	* instramentalness (numeric).
+* key (categorical),
+* mode (boolean), and
+* instramentalness (numeric).
 	
 Based on analysis of a smaller dataset, the removal of these features does not adversely impact the clustering. 
 
