@@ -18,7 +18,7 @@ const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 // Replace with your app's client ID, redirect URI and desired scopes
 const clientId = '0fe2926af3b44463b64fc2d34bed582c';
-const redirectUri = 'http://localhost:8888';
+const redirectUri = 'https://8000-dot-10996267-dot-devshell.appspot.com/new/';
 const scopes = [
   'user-top-read'
 ];
