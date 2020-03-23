@@ -206,7 +206,7 @@ function drawGraph() {
     d3.select("#mychart g").selectAll("circle").remove();
     d3.select("#mychart g").selectAll("text").remove();
 
-    d3.json("test_songs_sample_1k.json").then(function(root) {
+    d3.json("./api/Path_to_Data").then(function(root) {
 
         console.log(root);
 
