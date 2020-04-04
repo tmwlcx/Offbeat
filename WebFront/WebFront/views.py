@@ -9,9 +9,6 @@ import json
 import os
 from django.conf import settings
 
-def shout(request):
-    return render(request, 'home.html')
-
 def newvis(request):
     return render(request, 'index.html')
 
