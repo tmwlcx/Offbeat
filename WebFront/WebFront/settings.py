@@ -25,7 +25,7 @@ SECRET_KEY = 'dpt3a+6kab&y=dogt!q(m^ip4rd#jd8$qm(*1hh-yz3d1=+jq&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['propane-ground-269323.appspot.com']
 
 
 # Application definition
@@ -75,8 +75,11 @@ WSGI_APPLICATION = 'WebFront.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '/cloudsql/propane-ground-269323:us-east1:spotify-instance',
+        'USER': 'teameleven',
+        'PASSWORD': 'dbpassword',
+        'NAME': 'SPOTIFY',
     }
 }
 
@@ -113,6 +116,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
