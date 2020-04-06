@@ -1,4 +1,4 @@
-cd cse6242-2020-TeamProject/
+cd ~
 
 rm -rf cse6242-2020-TeamProject/
 
