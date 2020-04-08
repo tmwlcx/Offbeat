@@ -25,7 +25,7 @@ SECRET_KEY = 'dpt3a+6kab&y=dogt!q(m^ip4rd#jd8$qm(*1hh-yz3d1=+jq&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['propane-ground-269323.appspot.com']
+ALLOWED_HOSTS = ['propane-ground-269323.appspot.com', 'localhost']
 
 
 # Application definition
@@ -74,9 +74,16 @@ WSGI_APPLICATION = 'WebFront.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    #'default': {
+    #    'ENGINE': 'django.db.backends.mysql',
+    #    'HOST': '/cloudsql/propane-ground-269323:us-east1:spotify-instance',
+    #    'USER': 'teameleven',
+    #    'PASSWORD': 'dbpassword',
+    #    'NAME': 'SPOTIFY',
+    #}
+	'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '/cloudsql/propane-ground-269323:us-east1:spotify-instance',
+        'HOST': '35.196.88.209',
         'USER': 'teameleven',
         'PASSWORD': 'dbpassword',
         'NAME': 'SPOTIFY',

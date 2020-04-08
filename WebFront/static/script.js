@@ -19,10 +19,12 @@ const authEndpoint = 'https://accounts.spotify.com/authorize';
 // Replace with your app's client ID, redirect URI and desired scopes
 const clientId = '0fe2926af3b44463b64fc2d34bed582c';
 const redirectUri = 'https://propane-ground-269323.appspot.com';
+//const redirectUri = 'http://localhost:8080';
 const scopes = [
   'user-top-read'
 ];
 
+var post_object;
 // If there is no token, redirect to Spotify authorization
 function auth() {
   if (!_token) {
@@ -38,7 +40,7 @@ $.ajax({
   beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + _token );},
   success: function(data) {
 
-    console.log(data);
+    //console.log(data);
     // remove the button
     $('#intro').remove();
 
@@ -64,9 +66,9 @@ $.ajax({
               if (songs[i].id == song.id) {
                 songs[i].danceability = song.danceability;
                 songs[i].energy = song.energy;
+                songs[i].loudness = song.loudness;
                 songs[i].speechiness = song.speechiness;
                 songs[i].acousticness = song.acousticness;
-                songs[i].instrumentalness = song.instrumentalness;
                 songs[i].liveness = song.liveness;
                 songs[i].valence = song.valence;
                 songs[i].tempo = song.tempo;
@@ -76,20 +78,20 @@ $.ajax({
 
           var danceability_avg = 0;
           var energy_avg = 0;
+          var loudness_avg = 0;
           var speechiness_avg = 0;
           var acousticness_avg = 0;
-          var instrumentalness_avg = 0;
           var liveness_avg = 0;
           var valence_avg = 0;
           var tempo_avg = 0;
 
-          console.log(songs);
+          //console.log(songs);
           for (i=0; i<songs.length; i++) {
             danceability_avg += songs[i].danceability;
             energy_avg += songs[i].energy;
+            loudness_avg += songs[i].loudness;
             speechiness_avg += songs[i].speechiness;
             acousticness_avg += songs[i].acousticness;
-            instrumentalness_avg += songs[i].instrumentalness;
             liveness_avg += songs[i].liveness;
             valence_avg += songs[i].valence;
             tempo_avg += songs[i].tempo;
@@ -97,23 +99,36 @@ $.ajax({
 
           var user_averages = {
             'danceability': danceability_avg/num_songs,
-            'energy': energy_avg/num_songs,
+            'energy': energy_avg / num_songs,
+            'loudness': loudness_avg / num_songs,
             'speechiness': speechiness_avg/num_songs,
             'acousticness': acousticness_avg/num_songs,
-            'instrumentalness': instrumentalness_avg/num_songs,
             'liveness': liveness_avg/num_songs,
             'valence': valence_avg/num_songs,
             'tempo': tempo_avg/num_songs
           };
 
           danceability_avg = Math.round(danceability_avg/num_songs * 100);
-          energy_avg = Math.round(energy_avg/num_songs * 100);
+          energy_avg = Math.round(energy_avg / num_songs * 100);
+          loudness_avg = Math.round(loudness_avg / num_songs * 100);
           speechiness_avg = Math.round(speechiness_avg/num_songs * 100);
           acousticness_avg = Math.round(acousticness_avg/num_songs * 100);
-          instrumentalness_avg = Math.round(instrumentalness_avg/num_songs * 100);
           liveness_avg = Math.round(liveness_avg/num_songs * 100);
           valence_avg = Math.round(valence_avg/num_songs * 100);
           tempo_avg = Math.round(tempo_avg/num_songs);
+
+          post_object = {
+              "Values": {
+                  "danceability":danceability_avg,
+                  "energy": energy_avg,
+                  "loudness": loudness_avg,
+                  "speechiness": speechiness_avg,
+                  "acousticness": acousticness_avg,
+                  "liveness": liveness_avg,
+                  "valence": valence_avg,
+                  "tempo": tempo_avg
+              }
+          }
 
           //
           let structure_html = $('<div class="row" id="profile-row"><div class="col-md-3" id="profile-row-left"></div><div class="col-md-9" id="profile-row-right"></div></div>');
@@ -124,9 +139,9 @@ $.ajax({
           $('<ul></ul>').appendTo('#profile-row-left');
           $('<li>danceability: ' + danceability_avg + '%</li>').appendTo('#profile-row-left ul');
           $('<li>energy: ' + energy_avg + '%</li>').appendTo('#profile-row-left ul');
+          $('<li>loudness: ' + loudness_avg + '%</li>').appendTo('#profile-row-left ul');
           $('<li>speechiness: ' + speechiness_avg + '%</li>').appendTo('#profile-row-left ul');
           $('<li>acousticness: ' + acousticness_avg + '%</li>').appendTo('#profile-row-left ul');
-          $('<li>instrumentalness: ' + instrumentalness_avg + '%</li>').appendTo('#profile-row-left ul');
           $('<li>liveness: ' + liveness_avg + '%</li>').appendTo('#profile-row-left ul');
           $('<li>valence: ' + valence_avg + '%</li>').appendTo('#profile-row-left ul');
           $('<li>tempo: ' + tempo_avg + 'bpm</li>').appendTo('#profile-row-left ul');
@@ -134,7 +149,7 @@ $.ajax({
 
           let offbeat_text = $('<p>How offbeat do you want to get?</p>');
           let slider = $('<div class="sliders"><div id="slider-offbeat"></div></div>');
-          let explore_button = $('<button onclick="drawGraph()">Explore</button>');
+          let explore_button = $('<button onclick="return_results()">Explore</button>');
           let user_avg_text = $('<hr></hr><p>[for testing] example of JSON that could be sent to the back end</p>');
           let user_avg_json = $('<pre>' + JSON.stringify(user_averages, undefined, 2) + '</pre>');
           let top_50_json_text = $('<p>[for testing] audio feature data returned for your top ' + num_songs + ' songs from API endpoints:</p>');
@@ -177,8 +192,23 @@ $.ajax({
   }
 });
 
+return_results = function () {
+    $.ajax({
+        url: './api/Path_to_Data',
+        type: "POST",
+        data: JSON.stringify(post_object),
+        dataType: 'json',
+        success: function (data) {
+            var res_data = data
+            drawGraph(res_data)
+        }
+    });
+};
 
-function drawGraph() {
+
+function drawGraph(res_data) {
+
+    console.log(res_data);
 
     // draw the graph
     var svg = d3.select("#mychart"),
@@ -206,9 +236,9 @@ function drawGraph() {
     d3.select("#mychart g").selectAll("circle").remove();
     d3.select("#mychart g").selectAll("text").remove();
 
-    d3.json("./api/Path_to_Data").then(function(root) {
+    root = res_data
 
-        console.log(root);
+   // d3.json(res_data).then(function (root) {
 
         root = d3.hierarchy(root)
           .sum(function(d) { return d.size; })
@@ -283,5 +313,5 @@ function drawGraph() {
             node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
             circle.attr("r", function(d) { return d.r * k; });
         }
-    });
+    //});
 }
