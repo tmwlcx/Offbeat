@@ -108,6 +108,19 @@ $.ajax({
             'tempo': tempo_avg/num_songs
           };
 
+          post_object = {
+              "Values": {
+                  "danceability": danceability_avg/num_songs,
+                  "energy": energy_avg / num_songs,
+                  "loudness": loudness_avg / num_songs,
+                  "speechiness": speechiness_avg / num_songs,
+                  "acousticness": acousticness_avg / num_songs,
+                  "liveness": liveness_avg / num_songs,
+                  "valence": valence_avg / num_songs,
+                  "tempo": tempo_avg / num_songs
+              }
+          }
+
           danceability_avg = Math.round(danceability_avg/num_songs * 100);
           energy_avg = Math.round(energy_avg / num_songs * 100);
           loudness_avg = Math.round(loudness_avg / num_songs * 100);
@@ -116,19 +129,6 @@ $.ajax({
           liveness_avg = Math.round(liveness_avg/num_songs * 100);
           valence_avg = Math.round(valence_avg/num_songs * 100);
           tempo_avg = Math.round(tempo_avg/num_songs);
-
-          post_object = {
-              "Values": {
-                  "danceability":danceability_avg,
-                  "energy": energy_avg,
-                  "loudness": loudness_avg,
-                  "speechiness": speechiness_avg,
-                  "acousticness": acousticness_avg,
-                  "liveness": liveness_avg,
-                  "valence": valence_avg,
-                  "tempo": tempo_avg
-              }
-          }
 
           //
           let structure_html = $('<div class="row" id="profile-row"><div class="col-md-3" id="profile-row-left"></div><div class="col-md-9" id="profile-row-right"></div></div>');
