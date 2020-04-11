@@ -133,12 +133,12 @@ def Path_to_Data(request):
 
 	nested_data = {}
 	nested_data["Id"] = int(lvl3.iloc[0:1, 0:1].values[0][0])
-	nested_data["features"] = centers[centers["centroid_id"]==int(nested_data["Id"])].values.tolist()[0][1:]
+	nested_data["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(nested_data["Id"])].values.tolist()[0][1:])
 	nested_data["Children"] = []
 	for val in set(children['level2']):
 		temp = {}
 		temp['Id'] = int(val)
-		temp["features"] = centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]
+		temp["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:])
 		temp['Children'] = []
 		nested_data["Children"].append(temp)
 
@@ -148,7 +148,7 @@ def Path_to_Data(request):
 	for discard, song_vals1 in next_level.iterrows():
 		temp = {}
 		temp['Id'] = int(song_vals1['level1'])
-		temp["features"] = centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]
+		temp["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:])
 		temp['Children'] = []
 		for dict1 in nested_data["Children"]:
 			if dict1["Id"] == song_vals1['level2']:
@@ -160,7 +160,7 @@ def Path_to_Data(request):
 	for discard, song_vals1 in next_level.iterrows():
 		temp = {}
 		temp['Id'] = int(song_vals1['level0'])
-		temp["features"] = centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]
+		temp["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:])
 		temp['Children'] = []
 		for dict1 in nested_data["Children"]:
 			for dict2 in dict1["Children"]:
