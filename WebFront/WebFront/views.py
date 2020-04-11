@@ -132,53 +132,55 @@ def Path_to_Data(request):
 	centers = get_centroid_values(', '.join(["'" +str(x) + "'" for x in set_vals]))
 
 	nested_data = {}
-	nested_data["Id"] = int(lvl3.iloc[0:1, 0:1].values[0][0])
-	nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(nested_data["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-	nested_data["Children"] = []
+	nested_data["name"] = int(lvl3.iloc[0:1, 0:1].values[0][0])
+	nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(nested_data["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+	nested_data["children"] = []
 	for val in set(children['level2']):
 		temp = {}
-		temp['Id'] = int(val)
-		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-		temp['Children'] = []
-		nested_data["Children"].append(temp)
+		temp['name'] = int(val)
+		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+		temp['children'] = []
+		nested_data["children"].append(temp)
 
 	next_level = children[['level1', 'level2']]
 	next_level.drop_duplicates(inplace=True)
 
 	for discard, song_vals1 in next_level.iterrows():
 		temp = {}
-		temp['Id'] = int(song_vals1['level1'])
-		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-		temp['Children'] = []
-		for dict1 in nested_data["Children"]:
-			if dict1["Id"] == song_vals1['level2']:
-				dict1["Children"].append(temp)
+		temp['name'] = int(song_vals1['level1'])
+		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+		temp['children'] = []
+		for dict1 in nested_data["children"]:
+			if dict1["name"] == song_vals1['level2']:
+				dict1["children"].append(temp)
 
 	next_level = children[['level0', 'level1']]
 	next_level.drop_duplicates(inplace=True)
 
 	for discard, song_vals1 in next_level.iterrows():
 		temp = {}
-		temp['Id'] = int(song_vals1['level0'])
-		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-		temp['Children'] = []
-		for dict1 in nested_data["Children"]:
-			for dict2 in dict1["Children"]:
-				if dict2["Id"] == song_vals1['level1']:
-					dict2["Children"].append(temp)
+		temp['name'] = int(song_vals1['level0'])
+		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+		temp['children'] = []
+		for dict1 in nested_data["children"]:
+			for dict2 in dict1["children"]:
+				if dict2["name"] == song_vals1['level1']:
+					dict2["children"].append(temp)
 
 	next_level = children[['song_id', 'level0']]
 	next_level.drop_duplicates(inplace=True)
 
 	for discard, song_vals1 in next_level.iterrows():
 		temp = {}
-		temp['Id'] = song_vals1['song_id']
-		for dict1 in nested_data["Children"]:
-			for dict2 in dict1["Children"]:
-				for dict3 in dict2["Children"]:
-					if dict3["Id"] == song_vals1['level0']:
-						dict3["Children"].append(temp)
+		temp['name'] = song_vals1['song_id']
+		temp['similarity'] = 0.5
+		for dict1 in nested_data["children"]:
+			for dict2 in dict1["children"]:
+				for dict3 in dict2["children"]:
+					if dict3["name"] == song_vals1['level0']:
+						dict3["children"].append(temp)
 
+	nested_data = {"name" : "clusters", "children": [nested_data]}
 	#path = os.path.join(settings.BASE_DIR, r"static\test_songs_sample_1k.json")
 	#data = json.loads(open(path).read())
 	#data = json.dumps(nested_data, safe=False)
