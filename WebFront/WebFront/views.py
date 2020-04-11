@@ -105,6 +105,9 @@ def list_transform(single_column_frame):
     string_list = ', '.join(["'" +str(x) + "'" for x in string_list])
     return string_list
 
+def Home(request):
+	return render(request, 'index.html')
+
 @csrf_exempt
 def Path_to_Data(request):
 	data = json.loads(request.body)
