@@ -60,6 +60,8 @@ $.ajax({
         beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + _token );},
         success: function(tracks) {
 
+           var features = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo'];
+
           // compute averages
           tracks.audio_features.map(function(song) {
             for (var i in songs) {
@@ -181,7 +183,7 @@ $.ajax({
                 .attr('y', 7 + (i * 45));
               // text
               profile_svg.append('text')
-                .text(features_total[i])
+                .text(features[i])
                 .attr('class', 'audio_feature')
                 .attr('font-size', '14px')
                 .attr('fill', '#717171')
@@ -260,7 +262,6 @@ $.ajax({
           offbeat_question_subtext.appendTo($('#profile-row-left'));
           slider.appendTo($('#profile-row-left'));
 
-
           // slider
           var sliderOffbeat = d3
               .sliderBottom()
@@ -315,7 +316,6 @@ return_results = function () {
         }
     });
 };
-
 
 function drawGraph(res_data) {
 
