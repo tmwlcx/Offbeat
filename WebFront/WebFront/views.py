@@ -114,9 +114,9 @@ def Path_to_Data(request):
 	qt = load(os.path.join(settings.BASE_DIR, r"static\.pickle"))
 	data = np.array(list(data["Values"].values()))
 	user_data = qt.transform(data.reshape(1,-1))
+	centers = get_centers()
 	centroid = get_closest_centroid(centers, user_data)
 	song = get_point_data(centroid)
-
 
 	lvl3 = get_top_cluster(song)
 	srtnow = list_transform(lvl3)
@@ -133,12 +133,12 @@ def Path_to_Data(request):
 
 	nested_data = {}
 	nested_data["Id"] = int(lvl3.iloc[0:1, 0:1].values[0][0])
-	nested_data["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(nested_data["Id"])].values.tolist()[0][1:])
+	nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(nested_data["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
 	nested_data["Children"] = []
 	for val in set(children['level2']):
 		temp = {}
 		temp['Id'] = int(val)
-		temp["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:])
+		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
 		temp['Children'] = []
 		nested_data["Children"].append(temp)
 
@@ -148,7 +148,7 @@ def Path_to_Data(request):
 	for discard, song_vals1 in next_level.iterrows():
 		temp = {}
 		temp['Id'] = int(song_vals1['level1'])
-		temp["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:])
+		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
 		temp['Children'] = []
 		for dict1 in nested_data["Children"]:
 			if dict1["Id"] == song_vals1['level2']:
@@ -160,7 +160,7 @@ def Path_to_Data(request):
 	for discard, song_vals1 in next_level.iterrows():
 		temp = {}
 		temp['Id'] = int(song_vals1['level0'])
-		temp["features"] = qt.inverse_transform(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:])
+		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["Id"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
 		temp['Children'] = []
 		for dict1 in nested_data["Children"]:
 			for dict2 in dict1["Children"]:
