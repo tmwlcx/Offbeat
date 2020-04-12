@@ -97,11 +97,10 @@ def get_closest_centroid(centers, user_data):
     return np.argmin(np.linalg.norm(centers.values[:,1:9] - user_data, axis=1, ord=2))
 
 
-if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+#if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
 	# Connect using the unix socket located at
 	# /cloudsql/cloudsql-connection-name.
-
-	db = pymysql.connect(
+db = pymysql.connect(
 		unix_socket='/cloudsql/propane-ground-269323:us-east1:spotify-instance',
 		user='teameleven',
 		passwd='dbpassword',
@@ -112,8 +111,8 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
 # proxy, for example:
 # $ cloud_sql_proxy -instances=your-connection-name=tcp:3306
 
-else:
-	db = pymysql.connect(host='35.196.88.209', port=3310, user='root', passwd='dbpassword', db='SPOTIFY')
+#else:
+#	db = pymysql.connect(host='35.196.88.209', port=3310, user='root', passwd='dbpassword', db='SPOTIFY')
 
 
 #db = sqlalchemy.create_engine(
