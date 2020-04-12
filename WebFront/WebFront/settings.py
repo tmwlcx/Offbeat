@@ -75,22 +75,24 @@ WSGI_APPLICATION = 'WebFront.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 try:
-	import MySQLdb  # noqa: F401
+    import MySQLdb  # noqa: F401
 except ImportError:
     import pymysql
     pymysql.install_as_MySQLdb()
 
+# [START db_setup]
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
-
-	DATABASES = {
-	    'default': {
-	        'ENGINE': 'django.db.backends.mysql',
-	        'HOST': '/cloudsql/propane-ground-269323:us-east1:spotify-instance',
-	        'USER': 'teameleven',
-	        'PASSWORD': 'dbpassword',
-	        'NAME': 'SPOTIFY',
-	    }
-	}
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/propane-ground-269323:us-east1:spotify-instance',
+            'NAME': 'SPOTIFY',
+            'USER': 'teameleven',
+            'PASSWORD': 'dbpassword',
+        }
+    }
 else:
     # Running locally so connect to either a local MySQL instance or connect to
     # Cloud SQL via the proxy. To start the proxy via command line:
@@ -99,13 +101,14 @@ else:
     #
     # See https://cloud.google.com/sql/docs/mysql-connect-proxy
     DATABASES = {
-   		'default': {
-			'ENGINE': 'django.db.backends.mysql',
-			'HOST': '35.196.88.209',
-			'USER': 'teameleven',
-			'PASSWORD': 'dbpassword',
-			'NAME': 'SPOTIFY',
-		}
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '35.196.88.209',
+            'PORT': '3306',
+            'NAME': 'SPOTIFY',
+            'USER': 'teameleven',
+            'PASSWORD': 'dbpassword',
+        }
     }
 
 
