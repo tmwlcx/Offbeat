@@ -111,7 +111,7 @@ def Home(request):
 @csrf_exempt
 def Path_to_Data(request):
 	data = json.loads(request.body)
-	qt = load(os.path.join(settings.BASE_DIR, r"static\.pickle"))
+	qt = load(os.path.join(settings.BASE_DIR, r"static\qt.pickle"))
 	data = np.array(list(data["Values"].values()))
 	user_data = qt.transform(data.reshape(1,-1))
 	centers = get_centers()
