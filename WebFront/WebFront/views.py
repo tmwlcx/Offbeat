@@ -110,12 +110,12 @@ def get_closest_centroid(centers, user_data):
 
 
 #conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
-#conn = connections['default']
-#centers_top = get_centers()
-#centers_all = get_centers(10000)
-#centers_bottom = get_centers(3800, inv=True)
-#distances_top = get_distance_matrix(centers_top)
-#distances_all = get_distance_matrix(centers_all)
+conn = connections['default']
+centers_top = get_centers()
+centers_all = get_centers(10000)
+centers_bottom = get_centers(3800, inv=True)
+distances_top = get_distance_matrix(centers_top)
+distances_all = get_distance_matrix(centers_all)
 
 def Home(request):
 	return render(request, 'index.html')
@@ -124,12 +124,12 @@ def Home(request):
 def Path_to_Data(request):
 	#conn = db.connect()
 	#conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
-	conn = connections['default']
-	centers_top = get_centers()
-	centers_all = get_centers(10000)
-	centers_bottom = get_centers(3800, inv=True)
-	distances_top = get_distance_matrix(centers_top)
-	distances_all = get_distance_matrix(centers_all)
+	#conn = connections['default']
+	#centers_top = get_centers()
+	#centers_all = get_centers(10000)
+	#centers_bottom = get_centers(3800, inv=True)
+	#distances_top = get_distance_matrix(centers_top)
+	#distances_all = get_distance_matrix(centers_all)
 
 	data = json.loads(request.body)
 	qt = load(os.path.join(settings.BASE_DIR, r"static\qt.pickle"))
