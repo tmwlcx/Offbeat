@@ -25,7 +25,9 @@ SECRET_KEY = 'dpt3a+6kab&y=dogt!q(m^ip4rd#jd8$qm(*1hh-yz3d1=+jq&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['propane-ground-269323.appspot.com', 'localhost']
+ALLOWED_HOSTS = ['propane-ground-269323.appspot.com'
+				#, 'localhost'
+				]
 
 
 # Application definition
@@ -82,12 +84,12 @@ DATABASES = {
         'NAME': 'SPOTIFY',
     }
 #	'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'HOST': '35.196.88.209',
-#        'USER': 'teameleven',
-#        'PASSWORD': 'dbpassword',
-#        'NAME': 'SPOTIFY',
-#    }
+ #       'ENGINE': 'django.db.backends.mysql',
+  #      'HOST': '35.196.88.209',
+   #     'USER': 'teameleven',
+   #     'PASSWORD': 'dbpassword',
+   #     'NAME': 'SPOTIFY',
+   # }
 }
 
 
