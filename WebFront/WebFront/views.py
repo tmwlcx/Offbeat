@@ -32,8 +32,11 @@ def get_distance_matrix(centers):
     return distance_matrix(centers_arr, centers_arr)
 
 conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY')
-centers = get_centers()
-distances = get_distance_matrix(centers)
+centers_top = get_centers()
+centers_all = get_centers(10000)
+distances_top = get_distance_matrix(centers_top)
+distances_all = get_distance_matrix(centers_all)
+
 
 def get_top_cluster(centroid_id):
     query = """
@@ -114,74 +117,89 @@ def Path_to_Data(request):
 	qt = load(os.path.join(settings.BASE_DIR, r"static\qt.pickle"))
 	data = np.array(list(data["Values"].values()))
 	user_data = qt.transform(data.reshape(1,-1))
-	centers = get_centers()
-	centroid = get_closest_centroid(centers, user_data)
+	centroid = get_closest_centroid(centers_all, user_data)
 	song = get_point_data(centroid)
 
-	lvl3 = get_top_cluster(song)
-	srtnow = list_transform(lvl3)
-	lvl1 = get_fourth_cluster(srtnow)
+	#lvl3 = get_top_cluster(song)
+	lvl3 = get_top_cluster(256)
+	lvl3_int = int(lvl3['level3'].tolist()[0])
+	top_starts = 7591
 	maximum_points = 1000
+	max_top_levels = 5
+	limiter = 10
+	wildness = 3
 
-	limiter = maximum_points // len(lvl1)
+	# Take a slice of the distance matrix for top level clusters only
+	useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1),:]
+	# Do a skip step across the useful distances, sized based on the wildness the user chose
+	indices = np.argsort(useful_distances)[:,(wildness*1):(wildness*10):int(max_top_levels*wildness/4)].flatten().tolist()
+	indices = [x + top_starts for x in indices]
+	# Add the focus level 3
+	indices.append(lvl3.values.flatten().tolist()[0])
+	# Flatten the indices of the centers into a text string for SQL querying
+	indices_text = ', '.join(["'" +str(x) + "'" for x in indices])
+	# return all the level 3 centroids
+	All_Level_3_Centers = get_centroid_values(indices_text)
 
-	children = get_child_cluster(srtnow)
-
+	children = get_child_cluster(indices_text)
 	set_vals = collapse_columns(children)
-
 	centers = get_centroid_values(', '.join(["'" +str(x) + "'" for x in set_vals]))
 
-	nested_data = {}
-	nested_data["name"] = int(lvl3.iloc[0:1, 0:1].values[0][0])
-	nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(nested_data["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-	nested_data["children"] = []
-	for val in set(children['level2']):
-		temp = {}
-		temp['name'] = int(val)
-		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-		temp['children'] = []
-		nested_data["children"].append(temp)
+	top_level_node_holder = []
 
-	next_level = children[['level1', 'level2']]
-	next_level.drop_duplicates(inplace=True)
+	for val in All_Level_3_Centers['centroid_id']:
 
-	for discard, song_vals1 in next_level.iterrows():
-		temp = {}
-		temp['name'] = int(song_vals1['level1'])
-		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-		temp['children'] = []
-		for dict1 in nested_data["children"]:
-			if dict1["name"] == song_vals1['level2']:
-				dict1["children"].append(temp)
+		nested_data = {}
+		nested_data["Id"] = val
+		nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["Id"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)]
+		nested_data["children"] = []
+		for val in set(children['level2']):
+			temp = {}
+			temp['name'] = int(val)
+			temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+			temp['children'] = []
+			nested_data["children"].append(temp)
 
-	next_level = children[['level0', 'level1']]
-	next_level.drop_duplicates(inplace=True)
+		next_level = children[children['level3']==val][['level1', 'level2']]
+		next_level.drop_duplicates(inplace=True)
 
-	for discard, song_vals1 in next_level.iterrows():
-		temp = {}
-		temp['name'] = int(song_vals1['level0'])
-		temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
-		temp['children'] = []
-		for dict1 in nested_data["children"]:
-			for dict2 in dict1["children"]:
-				if dict2["name"] == song_vals1['level1']:
-					dict2["children"].append(temp)
+		for discard, song_vals1 in next_level.iterrows():
+			temp = {}
+			temp['name'] = int(song_vals1['level1'])
+			temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+			temp['children'] = []
+			for dict1 in nested_data["children"]:
+				if dict1["name"] == song_vals1['level2']:
+					dict1["children"].append(temp)
 
-	next_level = children[['song_id', 'level0']]
-	next_level.drop_duplicates(inplace=True)
+		next_level = children[children['level3']==val][['level0', 'level1']]
+		next_level.drop_duplicates(inplace=True)
 
-	for discard, song_vals1 in next_level.iterrows():
-		temp = {}
-		temp['name'] = song_vals1['song_id']
-		temp['similarity'] = 0.5
-		for dict1 in nested_data["children"]:
-			for dict2 in dict1["children"]:
-				for dict3 in dict2["children"]:
-					if dict3["name"] == song_vals1['level0']:
-						dict3["children"].append(temp)
+		for discard, song_vals1 in next_level.iterrows():
+			temp = {}
+			temp['name'] = int(song_vals1['level0'])
+			temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+			temp['children'] = []
+			for dict1 in nested_data["children"]:
+				for dict2 in dict1["children"]:
+					if dict2["name"] == song_vals1['level1']:
+						dict2["children"].append(temp)
 
-	nested_data = {"name" : "clusters", "children": [nested_data]}
-	#path = os.path.join(settings.BASE_DIR, r"static\test_songs_sample_1k.json")
-	#data = json.loads(open(path).read())
-	#data = json.dumps(nested_data, safe=False)
+		next_level = children[children['level3']==val][['song_id', 'level0']]
+		next_level.drop_duplicates(inplace=True)
+
+		for discard, song_vals1 in next_level.iterrows():
+			temp = {}
+			temp['name'] = song_vals1['song_id']
+			temp['similarity'] = 0.5
+			for dict1 in nested_data["children"]:
+				for dict2 in dict1["children"]:
+					for dict3 in dict2["children"]:
+						if dict3["name"] == song_vals1['level0']:
+							if len(dict3["children"]) < limiter:
+								dict3["children"].append(temp)
+
+		top_level_node_holder.append(nested_data)
+
+		nested_data = {"name" : "clusters", "children": top_level_node_holder}
 	return JsonResponse(nested_data)
