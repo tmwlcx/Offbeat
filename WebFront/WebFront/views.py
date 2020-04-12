@@ -152,7 +152,7 @@ def Path_to_Data(request):
 	#distances_all = get_distance_matrix(centers_all)
 
 	data = json.loads(request.body)
-	qt = load(os.path.join(settings.BASE_DIR, r"static\qt.pickle"))
+	qt = load(os.path.join(settings.BASE_DIR, r"static/qt.pickle"))
 
 	# A distance scaler for how far to pull points
 	wildness = int(data['how_offbeat'])
