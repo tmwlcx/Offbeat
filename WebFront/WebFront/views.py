@@ -101,10 +101,11 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
 	# Connect using the unix socket located at
 	# /cloudsql/cloudsql-connection-name.
 
-	db = MySQLdb.connect(
+	db = pymysql.connect(
 		unix_socket='/cloudsql/propane-ground-269323:us-east1:spotify-instance',
 		user='teameleven',
-		passwd='dbpassword')
+		passwd='dbpassword',
+		db='SPOTIFY')
 
 # If the unix socket is unavailable, then try to connect using TCP. This
 # will work if you're running a local MySQL server or using the Cloud SQL
@@ -112,7 +113,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
 # $ cloud_sql_proxy -instances=your-connection-name=tcp:3306
 
 else:
-	db = MySQLdb.connect(host='localhost', port=3310, user='root', passwd='something here', db='DB1')
+	db = pymysql.connect(host='35.196.88.209', port=3310, user='root', passwd='dbpassword', db='SPOTIFY')
 
 
 #db = sqlalchemy.create_engine(
