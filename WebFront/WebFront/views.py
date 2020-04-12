@@ -11,32 +11,34 @@ import json
 import os
 import random
 from collections import defaultdict
-from sklearn import preprocessing
+from sklearn import preprocessing, utils
 from joblib import load
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from scipy.spatial import distance_matrix
 
-def get_centers(level1_cluster_size=3800):
-    assert type(level1_cluster_size) == int
-    query = """
-            SELECT *
-            FROM centroids
-            LIMIT {}
-            """.format(level1_cluster_size)
-    centers = pd.read_sql(query, conn)
-    return centers
-
 def get_distance_matrix(centers):
     centers_arr = centers.values[:,1:8]
     return distance_matrix(centers_arr, centers_arr)
 
-conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY')
-centers_top = get_centers()
-centers_all = get_centers(10000)
-distances_top = get_distance_matrix(centers_top)
-distances_all = get_distance_matrix(centers_all)
-
+def get_centers(level1_cluster_size=633, inv=False):
+	assert type(level1_cluster_size) == int
+	if not inv:
+		query = """
+			SELECT *
+			FROM centroids
+			ORDER BY centroid_id desc
+			LIMIT {}
+			""".format(level1_cluster_size)
+	else:
+		query = """
+			SELECT *
+			FROM centroids
+			ORDER BY centroid_id asc
+			LIMIT {}
+			""".format(level1_cluster_size)
+	centers = pd.read_sql(query, conn)
+	return centers
 
 def get_top_cluster(centroid_id):
     query = """
@@ -44,15 +46,6 @@ def get_top_cluster(centroid_id):
             FROM songs_labeled
             WHERE level0 = '{}'
             """.format(centroid_id)
-    pt_data = pd.read_sql(query, conn)
-    return pt_data
-
-def get_fourth_cluster(string_list):
-    query = """
-            SELECT distinct(level0)
-            FROM songs_labeled
-            WHERE level3 IN ({})
-            """.format(string_list)
     pt_data = pd.read_sql(query, conn)
     return pt_data
 
@@ -64,16 +57,6 @@ def get_child_cluster(string_list):
             """.format(string_list)
     pt_data = pd.read_sql(query, conn)
     return pt_data
-
-def list_transform(single_column_frame):
-    string_list = single_column_frame[single_column_frame.columns[0]].tolist()
-    string_list = ', '.join(["'" +str(x) + "'" for x in string_list])
-    return string_list
-
-
-def get_closest_centroid(centers, user_data):
-    return np.argmin(np.linalg.norm(centers.values[:,1:9] - user_data, axis=1, ord=2))
-
 
 def get_centroid_values(list_of_vals):
     query = """
@@ -108,6 +91,16 @@ def list_transform(single_column_frame):
     string_list = ', '.join(["'" +str(x) + "'" for x in string_list])
     return string_list
 
+def get_closest_centroid(centers, user_data):
+    return np.argmin(np.linalg.norm(centers.values[:,1:9] - user_data, axis=1, ord=2))
+
+conn = pymysql.connect('35.196.88.209', 'teameleven', 'dbpassword', 'SPOTIFY')
+centers_top = get_centers()
+centers_all = get_centers(10000)
+centers_bottom = get_centers(3800, inv=True)
+distances_top = get_distance_matrix(centers_top)
+distances_all = get_distance_matrix(centers_all)
+
 def Home(request):
 	return render(request, 'index.html')
 
@@ -115,19 +108,22 @@ def Home(request):
 def Path_to_Data(request):
 	data = json.loads(request.body)
 	qt = load(os.path.join(settings.BASE_DIR, r"static\qt.pickle"))
+
+	# A distance scaler for how far to pull points
+	wildness = int(data['how_offbeat'])
+	# The Users cluster center
 	data = np.array(list(data["Values"].values()))
 	user_data = qt.transform(data.reshape(1,-1))
-	centroid = get_closest_centroid(centers_all, user_data)
+	centroid = get_closest_centroid(centers_bottom, user_data)
 	song = get_point_data(centroid)
 
 	#lvl3 = get_top_cluster(song)
-	lvl3 = get_top_cluster(256)
+	lvl3 = get_top_cluster(258)
 	lvl3_int = int(lvl3['level3'].tolist()[0])
 	top_starts = 7591
 	maximum_points = 1000
 	max_top_levels = 5
 	limiter = 10
-	wildness = 3
 
 	# Take a slice of the distance matrix for top level clusters only
 	useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1),:]
@@ -148,18 +144,20 @@ def Path_to_Data(request):
 	top_level_node_holder = []
 
 	for val in All_Level_3_Centers['centroid_id']:
-
 		nested_data = {}
 		nested_data["Id"] = val
 		nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["Id"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)]
 		nested_data["children"] = []
-		for val in set(children['level2']):
+
+		# adds Level 2s to the active level3 value dictionary
+		for val1 in set(children[children['level3']==val]['level2']):
 			temp = {}
-			temp['name'] = int(val)
+			temp['name'] = int(val1)
 			temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
 			temp['children'] = []
 			nested_data["children"].append(temp)
 
+		# Creates unique level1 and level2 combinations data frame
 		next_level = children[children['level3']==val][['level1', 'level2']]
 		next_level.drop_duplicates(inplace=True)
 
@@ -185,7 +183,7 @@ def Path_to_Data(request):
 					if dict2["name"] == song_vals1['level1']:
 						dict2["children"].append(temp)
 
-		next_level = children[children['level3']==val][['song_id', 'level0']]
+		next_level = utils.shuffle(children[children['level3']==val][['song_id', 'level0']])
 		next_level.drop_duplicates(inplace=True)
 
 		for discard, song_vals1 in next_level.iterrows():
@@ -197,6 +195,7 @@ def Path_to_Data(request):
 					for dict3 in dict2["children"]:
 						if dict3["name"] == song_vals1['level0']:
 							if len(dict3["children"]) < limiter:
+								curr_cluster = centers[centers["centroid_id"]==int(song_vals1['level0'])]
 								dict3["children"].append(temp)
 
 		top_level_node_holder.append(nested_data)

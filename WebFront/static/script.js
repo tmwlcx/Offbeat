@@ -98,7 +98,7 @@ $.ajax({
         }
 
         var user_averages = {
-          'how_offbeat': 10,
+          'how_offbeat': 3,
           'audio_features': {
             'danceability': danceability_total/num_songs,
             'energy': energy_total/num_songs,
@@ -112,6 +112,7 @@ $.ajax({
         };
 
         post_object = {
+          'how_offbeat': 3,
           "Values": {
             "danceability": danceability_total / num_songs,
             "energy": energy_total / num_songs,
@@ -316,7 +317,7 @@ return_results = function () {
 };
 
 function drawGraph(res_data) {
-
+    console.log(res_data)
   // clear the legend and all of the circle svg's child elements on redraw
   d3.select("#mylegend g").remove()
   d3.select("#mychart g").remove()
