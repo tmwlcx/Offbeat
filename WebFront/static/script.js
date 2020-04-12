@@ -305,6 +305,13 @@ $.ajax({
 
 return_results = function () {
 
+    // disable button
+    $('button').prop("disabled", true);
+    $('button').css("background-color", "#83cc9c");
+    $('button').html(
+      `<span class="spinner-border" style="width:3rem; height:3rem" role="status" aria-hidden="true"></span> Loading...`
+    )
+
     var sliderVal = d3.select("#slider-offbeat").text().substring(11);
     post_object["how_offbeat"] = parseInt(sliderVal);
 
@@ -325,6 +332,11 @@ function drawGraph(res_data) {
   // clear the legend and all of the circle svg's child elements on redraw
   d3.select("#mylegend g").remove()
   d3.select("#mychart g").remove()
+
+  // return button to correct state
+  $('button').prop("disabled", false);
+  $('button').css("background-color", "#1ed760");
+  $('button').html(`Explore`)
 
   // draw the legend & text
   var cScale = d3.scaleSequential(d3.interpolateBlues)
