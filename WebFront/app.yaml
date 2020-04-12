@@ -12,6 +12,6 @@ handlers:
 - url: /.*
   script: auto
 env_variables:
-  CLOUDSQL_CONNECTION_NAME = propane-ground-269323:us-east1:spotify-instance
-  CLOUDSQL_USER = teameleven
-  CLOUDSQL_PASSWORD = dbpassword
+  CLOUDSQL_CONNECTION_NAME: "propane-ground-269323:us-east1:spotify-instance"
+  CLOUDSQL_USER: "teameleven"
+  CLOUDSQL_PASSWORD: "dbpassword"
