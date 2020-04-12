@@ -1,18 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
-import pandas as pd
-import numpy as np
-import sys
-import pymysql
-import sqlalchemy
+import pandas as pd #vs1.0.1
+import numpy as np # vs1.19
+import sys #stdlib no reqs
+import pymysql # vs0.7.2
+import sqlalchemy #vs1.3.13
 # transform data to json for sending to front end when using d3
-import json
-import os
-import random
+import json #stdlib no reqs
+import os #stdlib no reqs
+import random #stdlib no reqs
 from collections import defaultdict
 from sklearn import preprocessing, utils
-from joblib import load
+from joblib import load #vs0.14.1
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from scipy.spatial import distance_matrix
@@ -147,7 +147,7 @@ def Path_to_Data(request):
 
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
-		nested_data["Id"] = val
+		nested_data["Id"] = int(val)
 		nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["Id"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)]
 		nested_data["children"] = []
 
