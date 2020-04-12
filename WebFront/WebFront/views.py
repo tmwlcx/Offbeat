@@ -100,11 +100,11 @@ def get_closest_centroid(centers, user_data):
 #if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
 	# Connect using the unix socket located at
 	# /cloudsql/cloudsql-connection-name.
-db = pymysql.connect(
-		unix_socket='/cloudsql/propane-ground-269323:us-east1:spotify-instance',
-		user='teameleven',
-		passwd='dbpassword',
-		db='SPOTIFY')
+#db = pymysql.connect(
+#		unix_socket='/cloudsql/propane-ground-269323:us-east1:spotify-instance',
+#		user='teameleven',
+#		passwd='dbpassword',
+#		db='SPOTIFY')
 
 # If the unix socket is unavailable, then try to connect using TCP. This
 # will work if you're running a local MySQL server or using the Cloud SQL
@@ -130,12 +130,12 @@ db = pymysql.connect(
 
 #conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
 #conn = connections['default']
-conn = db.connect()
-centers_top = get_centers()
-centers_all = get_centers(10000)
-centers_bottom = get_centers(3800, inv=True)
-distances_top = get_distance_matrix(centers_top)
-distances_all = get_distance_matrix(centers_all)
+#conn = db.connect()
+#centers_top = get_centers()
+#centers_all = get_centers(10000)
+#centers_bottom = get_centers(3800, inv=True)
+#distances_top = get_distance_matrix(centers_top)
+#distances_all = get_distance_matrix(centers_all)
 
 def Home(request):
 	return render(request, 'index.html')
@@ -144,7 +144,7 @@ def Home(request):
 def Path_to_Data(request):
 	#conn = db.connect()
 	#conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
-	#conn = connections['default']
+	conn = connections['default']
 	#centers_top = get_centers()
 	#centers_all = get_centers(10000)
 	#centers_bottom = get_centers(3800, inv=True)
