@@ -96,17 +96,36 @@ def list_transform(single_column_frame):
 def get_closest_centroid(centers, user_data):
     return np.argmin(np.linalg.norm(centers.values[:,1:9] - user_data, axis=1, ord=2))
 
-db = sqlalchemy.create_engine(
-    # Equivalent URL:
-    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
-    sqlalchemy.engine.url.URL(
-        drivername="mysql+pymysql",
-        username='teameleven',
-        password='dbpassword',
-        database='SPOTIFY',
-        query={"unix_socket": "/cloudsql/propane-ground-269323:us-east1:spotify-instance"},
-    )
-)
+
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+	# Connect using the unix socket located at
+	# /cloudsql/cloudsql-connection-name.
+
+	db = MySQLdb.connect(
+		unix_socket='/cloudsql/propane-ground-269323:us-east1:spotify-instance',
+		user='teameleven',
+		passwd='dbpassword')
+
+# If the unix socket is unavailable, then try to connect using TCP. This
+# will work if you're running a local MySQL server or using the Cloud SQL
+# proxy, for example:
+# $ cloud_sql_proxy -instances=your-connection-name=tcp:3306
+
+else:
+	db = MySQLdb.connect(host='localhost', port=3310, user='root', passwd='something here', db='DB1')
+
+
+#db = sqlalchemy.create_engine(
+#    # Equivalent URL:
+#    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
+#    sqlalchemy.engine.url.URL(
+#        drivername="mysql+pymysql",
+#        username='teameleven',
+#        password='dbpassword',
+#        database='SPOTIFY',
+#        query={"unix_socket": "/cloudsql/propane-ground-269323:us-east1:spotify-instance"},
+#    )
+#)
 
 
 #conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
