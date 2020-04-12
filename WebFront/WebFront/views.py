@@ -96,17 +96,17 @@ def list_transform(single_column_frame):
 def get_closest_centroid(centers, user_data):
     return np.argmin(np.linalg.norm(centers.values[:,1:9] - user_data, axis=1, ord=2))
 
-db = sqlalchemy.create_engine(
-    # Equivalent URL:
-    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
-    sqlalchemy.engine.url.URL(
-        drivername="mysql+pymysql",
-        username='teameleven',
-        password='dbpassword',
-        database='SPOTIFY',
-        query={"unix_socket": "/cloudsql/propane-ground-269323:us-east1:spotify-instance'},
-    )
-)
+#db = sqlalchemy.create_engine(
+#    # Equivalent URL:
+#    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
+#    sqlalchemy.engine.url.URL(
+#        drivername="mysql+pymysql",
+#        username='teameleven',
+#        password='dbpassword',
+#        database='SPOTIFY',
+#        query={"unix_socket": "/cloudsql/propane-ground-269323:us-east1:spotify-instance'},
+#    )
+#)
 
 
 #conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
@@ -122,9 +122,9 @@ def Home(request):
 
 @csrf_exempt
 def Path_to_Data(request):
-	conn = db.connect()
+	#conn = db.connect()
 	#conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
-	#conn = connections['default']
+	conn = connections['default']
 	centers_top = get_centers()
 	centers_all = get_centers(10000)
 	centers_bottom = get_centers(3800, inv=True)
