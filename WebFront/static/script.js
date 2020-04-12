@@ -98,7 +98,7 @@ $.ajax({
         }
 
         var user_averages = {
-          'how_offbeat': 3,
+          'how_offbeat': 0,
           'audio_features': {
             'danceability': danceability_total/num_songs,
             'energy': energy_total/num_songs,
@@ -112,7 +112,7 @@ $.ajax({
         };
 
         post_object = {
-          'how_offbeat': 3,
+          'how_offbeat': 0,
           "Values": {
             "danceability": danceability_total / num_songs,
             "energy": energy_total / num_songs,
@@ -265,7 +265,7 @@ $.ajax({
         // slider
         var sliderOffbeat = d3
             .sliderBottom()
-            .min(0).max(10)
+            .min(1).max(10)
             .step(1)
             .width(200)
             .default(10)
@@ -304,6 +304,10 @@ $.ajax({
 });
 
 return_results = function () {
+
+    var sliderVal = d3.select("#slider-offbeat").text().substring(11);
+    post_object["how_offbeat"] = parseInt(sliderVal);
+
     $.ajax({
         url: './api/Path_to_Data',
         type: "POST",
@@ -348,26 +352,26 @@ function drawGraph(res_data) {
   svg_legend.append("text")
     .attr("x", 0)
     .attr("y", 38)
-    .text("far away from what")
+    .text("far away from")
     .style("font-size", "12px")
     .style("fill", "#ababab");
   svg_legend.append("text")
     .attr("x", 700)
     .attr("y", 38)
-    .text("very close to what")
+    .text("very close to")
     .style("font-size", "12px")
     .style("fill", "#ababab")
     .attr("text-anchor", "end");
   svg_legend.append("text")
     .attr("x", 0)
     .attr("y", 50)
-    .text("you asked for")
+    .text("your profile")
     .style("font-size", "12px")
     .style("fill", "#ababab");
   svg_legend.append("text")
     .attr("x", 700)
     .attr("y", 50)
-    .text("you asked for")
+    .text("your profile")
     .style("font-size", "12px")
     .style("fill", "#ababab")
     .attr("text-anchor", "end");

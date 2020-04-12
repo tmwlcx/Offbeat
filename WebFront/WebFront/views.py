@@ -16,6 +16,7 @@ from joblib import load
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from scipy.spatial import distance_matrix
+from scipy.spatial.distance import euclidean
 
 def get_distance_matrix(centers):
     centers_arr = centers.values[:,1:8]
@@ -122,13 +123,14 @@ def Path_to_Data(request):
 	lvl3_int = int(lvl3['level3'].tolist()[0])
 	top_starts = 7591
 	maximum_points = 1000
-	max_top_levels = 5
+	max_top_levels = 6
 	limiter = 10
+	scaling_factor = np.max(distances_all)
 
 	# Take a slice of the distance matrix for top level clusters only
-	useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1),:]
+	useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1),(lvl3_int-top_starts):]
 	# Do a skip step across the useful distances, sized based on the wildness the user chose
-	indices = np.argsort(useful_distances)[:,(wildness*1):(wildness*10):int(max_top_levels*wildness/4)].flatten().tolist()
+	indices = np.argsort(useful_distances)[:,1:(wildness*60):int((wildness*60)/max_top_levels)].flatten().tolist()
 	indices = [x + top_starts for x in indices]
 	# Add the focus level 3
 	indices.append(lvl3.values.flatten().tolist()[0])
@@ -195,7 +197,10 @@ def Path_to_Data(request):
 					for dict3 in dict2["children"]:
 						if dict3["name"] == song_vals1['level0']:
 							if len(dict3["children"]) < limiter:
-								curr_cluster = centers[centers["centroid_id"]==int(song_vals1['level0'])]
+								curr_cluster = np.array(centers_all[centers_all["centroid_id"]==int(song_vals1['level0'])]).flatten()[1:9]
+								orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
+								distance = euclidean(orig_cluster.flatten(), curr_cluster) / scaling_factor
+								temp['similarity'] = distance
 								dict3["children"].append(temp)
 
 		top_level_node_holder.append(nested_data)
