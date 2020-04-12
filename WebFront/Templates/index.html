@@ -15,22 +15,56 @@
             crossorigin="anonymous"></script>
     <script src="{% static 'script.js' %}" type="text/javascript"></script>
     <style>
-        button {
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 20px;
-            color: white;
-            background-color: #1ed760;
-            border-radius: 5px;
-        }
-
-            button:hover {
-                background-color: #17ad4c;
-            }
-
-        p {
-            width: 600px;
-        }
+      button{
+          margin-top: 20px;
+          padding: 10px;
+          font-size: 20px;
+          color: white;
+          background-color: #1ed760;
+          border-radius: 5px;
+      }
+      button:hover {
+          background-color: #17ad4c;
+      }
+      #intro p {
+          width: 600px;
+      }
+      .d3-tip {
+        padding: 12px;
+      }
+      .d3-tip, .d3-circle-tip {
+        line-height: 1;
+        font-size: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 5px;
+        width: 200px;
+      }
+      .d3-tip:after, .d3-circle-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        position: absolute;
+      }
+      .d3-tip.n:after, .d3-circle-tip.n:after {
+        content: "\25BC";
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+        text-align: center;
+      }
+      .d3-circle-tip {
+        padding: 5px;
+        background: rgb(0,0,0);
+        width: 310px;
+      }
+      #mylegend .legend-text {
+        font-size: 12px;
+        color: #ababab;
+      }
     </style>
 </head>
   <body class="container">
