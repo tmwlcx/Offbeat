@@ -104,7 +104,7 @@ db = sqlalchemy.create_engine(
         username='teameleven',
         password='dbpassword',
         database='SPOTIFY',
-        query={"unix_socket": "/cloudsql/propane-ground-269323:us-east1:spotify-instance',
+        query={"unix_socket": "/cloudsql/propane-ground-269323:us-east1:spotify-instance'},
     )
 )
 
