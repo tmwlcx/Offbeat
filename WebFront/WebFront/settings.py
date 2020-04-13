@@ -84,7 +84,7 @@ if os.getenv('GAE_APPLICATION', None):
     # Running on production App Engine, so connect to Google Cloud SQL using
     # the unix socket at /cloudsql/<your-cloudsql-connection string>
 	db_user = os.environ.get('CLOUDSQL_USERNAME')
-	db_password = os.environ.get('CLOUDSQL_PASSWORD')
+	db_pass = os.environ.get('CLOUDSQL_PASSWORD')
 	db_name = os.environ.get('CLOUDSQL_DATABASE_NAME')
 	db_Connection = os.environ.get('CLOUDSQL_CONNECTION_NAME')
 
@@ -94,7 +94,7 @@ if os.getenv('GAE_APPLICATION', None):
 				'HOST': '/cloudsql/{}'.format(db_Connection),
 				'NAME': db_name,
 				'USER': db_user,
-				'PASSWORD': db_password,
+				'PASSWORD': db_pass,
 			}
 		}
 else:

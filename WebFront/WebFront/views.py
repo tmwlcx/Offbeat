@@ -114,19 +114,26 @@ def get_closest_centroid(centers, user_data):
 #else:
 #	db = pymysql.connect(host='35.196.88.209', port=3310, user='root', passwd='dbpassword', db='SPOTIFY')
 
+#	db_user = os.environ.get('CLOUDSQL_USERNAME')
+#	db_pass = os.environ.get('CLOUDSQL_PASSWORD')
+#	db_name = os.environ.get('CLOUDSQL_DATABASE_NAME')
+#	cloud_sql_connection_name = os.environ.get('CLOUDSQL_CONNECTION_NAME')
+
 
 #db = sqlalchemy.create_engine(
-#    # Equivalent URL:
-#    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
-#    sqlalchemy.engine.url.URL(
-#        drivername="mysql+pymysql",
-#        username='teameleven',
-#        password='dbpassword',
-#        database='SPOTIFY',
-#        query={"unix_socket": "/cloudsql/propane-ground-269323:us-east1:spotify-instance"},
-#    )
-#)
 
+    # Equivalent URL:
+    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
+ #   sqlalchemy.engine.url.URL(
+#        drivername="mysql+pymysql",
+#        username=db_user,
+#        password=db_pass,
+#        database=db_name,
+#        query={"unix_socket": "/cloudsql/{}".format(cloud_sql_connection_name)},
+#    ),
+    # ... Specify additional properties here.
+    # ...
+)
 
 #conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
 conn = connections['default']
