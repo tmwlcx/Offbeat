@@ -12,7 +12,7 @@ handlers:
 - url: /.*
   script: auto
 
-INSTANCE_CLASS: F4
+instance_class: F4
 
 env_variables:
   CLOUDSQL_CONNECTION_NAME: propane-ground-269323:us-east1:spotify-instance
