@@ -129,7 +129,7 @@ def get_closest_centroid(centers, user_data):
 
 
 #conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
-#conn = connections['default']
+conn = connections['default']
 #conn = db.connect()
 #centers_top = get_centers()
 #centers_all = get_centers(10000)
@@ -144,7 +144,7 @@ def Home(request):
 def Path_to_Data(request):
 	#conn = db.connect()
 	#conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
-	conn = connections['default']
+	#conn = connections['default']
 	centers_top = get_centers()
 	centers_all = get_centers(10000)
 	centers_bottom = get_centers(3800, inv=True)
