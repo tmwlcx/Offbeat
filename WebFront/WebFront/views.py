@@ -133,7 +133,7 @@ def get_closest_centroid(centers, user_data):
 #    ),
     # ... Specify additional properties here.
     # ...
-)
+#)
 
 #conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
 conn = connections['default']
