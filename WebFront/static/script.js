@@ -322,6 +322,7 @@ function drawGraph(res_data) {
   // clear the legend and all of the circle svg's child elements on redraw
   d3.select("#mylegend g").remove()
   d3.select("#mychart g").remove()
+  d3.select(".d3-circle-tip").remove()
 
   // return button to correct state
   $('button').prop("disabled", false);
