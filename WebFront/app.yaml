@@ -11,7 +11,9 @@ handlers:
 # the entire handlers section) when there are no static files defined.
 - url: /.*
   script: auto
+
 env_variables:
-  CLOUDSQL_CONNECTION_NAME: "propane-ground-269323:us-east1:spotify-instance"
-  CLOUDSQL_USER: "teameleven"
-  CLOUDSQL_PASSWORD: "dbpassword"
+  CLOUDSQL_CONNECTION_NAME: propane-ground-269323:us-east1:spotify-instance
+  CLOUDSQL_DATABASE_NAME: SPOTIFY
+  CLOUDSQL_USERNAME: teameleven
+  CLOUDSQL_PASSWORD: dbpassword

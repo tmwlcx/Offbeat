@@ -74,42 +74,46 @@ WSGI_APPLICATION = 'WebFront.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-try:
-    import MySQLdb  # noqa: F401
-except ImportError:
-    import pymysql
-    pymysql.install_as_MySQLdb()
+
+import pymysql  # noqa: 402
+pymysql.version_info = (1, 4, 6, 'final', 0)  # change mysqlclient version
+pymysql.install_as_MySQLdb()
 
 # [START db_setup]
-#if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
+if os.getenv('GAE_APPLICATION', None):
     # Running on production App Engine, so connect to Google Cloud SQL using
     # the unix socket at /cloudsql/<your-cloudsql-connection string>
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/propane-ground-269323:us-east1:spotify-instance',
-            'NAME': 'SPOTIFY',
-            'USER': 'teameleven',
-            'PASSWORD': 'dbpassword',
-        }
-    }
-#else:
+	db_user = os.environ.get('CLOUDSQL_USERNAME')
+	db_password = os.environ.get('CLOUDSQL_PASSWORD')
+	db_name = os.environ.get('CLOUDSQL_DATABASE_NAME')
+	db_Connection = os.environ.get('CLOUDSQL_CONNECTION_NAME')
+
+	DATABASES = {
+			'default': {
+				'ENGINE': 'django.db.backends.mysql',
+				'HOST': '/cloudsql/{}'.format(db_Connection),
+				'NAME': db_name,
+				'USER': db_user,
+				'PASSWORD': db_password,
+			}
+		}
+else:
     # Running locally so connect to either a local MySQL instance or connect to
     # Cloud SQL via the proxy. To start the proxy via command line:
     #
     #     $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
     #
     # See https://cloud.google.com/sql/docs/mysql-connect-proxy
-#    DATABASES = {
-#        'default': {
-#            'ENGINE': 'django.db.backends.mysql',
-#            'HOST': '35.196.88.209',
-#            'PORT': '3306',
-#            'NAME': 'SPOTIFY',
-#            'USER': 'teameleven',
-#            'PASSWORD': 'dbpassword',
-#        }
-#    }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '35.196.88.209',
+            'PORT': '3306',
+            'NAME': 'SPOTIFY',
+            'USER': 'teameleven',
+            'PASSWORD': 'dbpassword',
+        }
+    }
 
 
 # Password validation
