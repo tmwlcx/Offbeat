@@ -97,47 +97,7 @@ def get_closest_centroid(centers, user_data):
     return np.argmin(np.linalg.norm(centers.values[:,1:9] - user_data, axis=1, ord=2))
 
 
-#if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
-	# Connect using the unix socket located at
-	# /cloudsql/cloudsql-connection-name.
-#db = pymysql.connect(
-#		unix_socket='/cloudsql/propane-ground-269323:us-east1:spotify-instance',
-#		user='teameleven',
-#		passwd='dbpassword',
-#		db='SPOTIFY')
-
-# If the unix socket is unavailable, then try to connect using TCP. This
-# will work if you're running a local MySQL server or using the Cloud SQL
-# proxy, for example:
-# $ cloud_sql_proxy -instances=your-connection-name=tcp:3306
-
-#else:
-#	db = pymysql.connect(host='35.196.88.209', port=3310, user='root', passwd='dbpassword', db='SPOTIFY')
-
-#	db_user = os.environ.get('CLOUDSQL_USERNAME')
-#	db_pass = os.environ.get('CLOUDSQL_PASSWORD')
-#	db_name = os.environ.get('CLOUDSQL_DATABASE_NAME')
-#	cloud_sql_connection_name = os.environ.get('CLOUDSQL_CONNECTION_NAME')
-
-
-#db = sqlalchemy.create_engine(
-
-    # Equivalent URL:
-    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
- #   sqlalchemy.engine.url.URL(
-#        drivername="mysql+pymysql",
-#        username=db_user,
-#        password=db_pass,
-#        database=db_name,
-#        query={"unix_socket": "/cloudsql/{}".format(cloud_sql_connection_name)},
-#    ),
-    # ... Specify additional properties here.
-    # ...
-#)
-
-#conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
 conn = connections['default']
-#conn = db.connect()
 centers_top = get_centers()
 centers_all = get_centers(10000)
 centers_bottom = get_centers(3800, inv=True)
@@ -149,14 +109,7 @@ def Home(request):
 
 @csrf_exempt
 def Path_to_Data(request):
-	#conn = db.connect()
-	#conn = pymysql.connect('/cloudsql/propane-ground-269323:us-east1:spotify-instance', 'teameleven', 'dbpassword', 'SPOTIFY')
-	#conn = connections['default']
-	#centers_top = get_centers()
-	#centers_all = get_centers(10000)
-	#centers_bottom = get_centers(3800, inv=True)
-	#distances_top = get_distance_matrix(centers_top)
-	#distances_all = get_distance_matrix(centers_all)
+
 
 	data = json.loads(request.body)
 	qt = load(os.path.join(settings.BASE_DIR, r"static/qt.pickle"))
@@ -169,8 +122,8 @@ def Path_to_Data(request):
 	centroid = get_closest_centroid(centers_bottom, user_data)
 	song = get_point_data(centroid)
 
-	#lvl3 = get_top_cluster(song)
-	lvl3 = get_top_cluster(258)
+	lvl3 = get_top_cluster(song)
+	#lvl3 = get_top_cluster(258)
 	lvl3_int = int(lvl3['level3'].tolist()[0])
 	top_starts = 7591
 	maximum_points = 1000
