@@ -20,6 +20,6 @@ from WebFront import views
 
 urlpatterns = [
     path('', views.Home, name='OffBeat'),
-    path('./api/Path_to_Data', views.Path_to_Data, name='Path_to_Data'),
+    path('api/Path_to_Data', views.Path_to_Data, name='Path_to_Data'),
     path('admin/', admin.site.urls),
 ]
