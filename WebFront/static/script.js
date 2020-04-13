@@ -355,13 +355,13 @@ function drawGraph(res_data) {
   svg_legend.append("text")
     .attr("x", 0)
     .attr("y", 38)
-    .text("far away from")
+    .text("very close to")
     .style("font-size", "12px")
     .style("fill", "#ababab");
   svg_legend.append("text")
     .attr("x", 700)
     .attr("y", 38)
-    .text("very close to")
+    .text("far away from")
     .style("font-size", "12px")
     .style("fill", "#ababab")
     .attr("text-anchor", "end");
