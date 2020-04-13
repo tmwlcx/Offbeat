@@ -151,17 +151,30 @@ def Path_to_Data(request):
 
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
-		nested_data["Id"] = int(val)
-		nested_data["features"] = [int(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["Id"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)]
+		nested_data["name"] = int(val)
+		curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+		orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
+		distance = orig_cluster - curr_cluster
+		dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
+		names = [feature_Order[i] for i in dist_indexes]
+		distances = [distance[i] for i in dist_indexes]
+		nested_data["features"] = {k : v for k, v in zip(names, distances)}
 		nested_data["children"] = []
 
 		# adds Level 2s to the active level3 value dictionary
 		for val1 in set(children[children['level3']==val]['level2']):
 			temp = {}
 			temp['name'] = int(val1)
-			temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+			curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+			orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
+			distance = orig_cluster - curr_cluster
+			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
+			names = [feature_Order[i] for i in dist_indexes]
+			distances = [distance[i] for i in dist_indexes]
+			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			nested_data["children"].append(temp)
+
 
 		# Creates unique level1 and level2 combinations data frame
 		next_level = children[children['level3']==val][['level1', 'level2']]
@@ -170,7 +183,13 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level1'])
-			temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+		    curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+			orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
+			distance = orig_cluster - curr_cluster
+			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
+			names = [feature_Order[i] for i in dist_indexes]
+			distances = [distance[i] for i in dist_indexes]
+			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			for dict1 in nested_data["children"]:
 				if dict1["name"] == song_vals1['level2']:
@@ -182,7 +201,13 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level0'])
-			temp["features"] = [int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.tolist()[0][1:]).reshape(1,-1)).reshape(-1,1)]
+			curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+			orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
+			distance = orig_cluster - curr_cluster
+			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
+			names = [feature_Order[i] for i in dist_indexes]
+			distances = [distance[i] for i in dist_indexes]
+			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			for dict1 in nested_data["children"]:
 				for dict2 in dict1["children"]:
@@ -195,7 +220,6 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = song_vals1['song_id']
-			temp['similarity'] = 0.5
 			for dict1 in nested_data["children"]:
 				for dict2 in dict1["children"]:
 					for dict3 in dict2["children"]:
