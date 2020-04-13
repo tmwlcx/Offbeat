@@ -287,16 +287,6 @@ $.ajax({
         let circles = $('<svg id="mychart" width="700" height="700"></svg>');
         circles.appendTo($('#profile-row-right'));
 
-        // print consolidated json data at the bottom of the page
-        let user_avg_text = $('<hr></hr><p>[for testing] example of JSON that could be sent to the back end:</p>');
-        let user_avg_json = $('<pre>' + JSON.stringify(user_averages, undefined, 2) + '</pre>');
-        let top_50_json_text = $('<p>[for testing] audio feature data returned for your top ' + num_songs + ' songs from API endpoints:</p>');
-        let top_50_json_viewable = $('<pre>' + JSON.stringify(songs, undefined, 2) + '</pre>');
-        user_avg_text.appendTo($('#testing'));
-        user_avg_json.appendTo($('#testing'));
-        top_50_json_text.appendTo($('#testing'));
-        top_50_json_viewable.appendTo($('#testing'));
-
       }
     });
 
@@ -482,8 +472,19 @@ function drawGraph(res_data) {
 
   // get a random circle
   var all_circles = d3.selectAll("circle");
-  var zoom_circles = Object.values(all_circles._groups[0]).filter(circle => circle.__data__.height === 2); // level 2 starting zoom
-  var chosen_circle = zoom_circles[Math.floor(Math.random() * zoom_circles.length)].__data__;
+  // zoom to the circle with songs that have the highest similarity
+  var zoom_circles = Object.values(all_circles._groups[0]).filter(circle => circle.__data__.height === 1); // level 1 starting zoom
+  var highest_similarity = 0;
+  var chosen_circle;
+  for (i=0; i< zoom_circles.length; i++) {
+    // if it's a lowest-level node, check to see if the first child element beats the current highest similarity
+    var current_similarity = zoom_circles[i].__data__.data.children[0].similarity;
+    // if so, set a new highest score and save the chosen circle
+    if (current_similarity > highest_similarity) {
+      highest_similarity = current_similarity;
+      chosen_circle = zoom_circles[i].__data__;
+    }
+  }
 
   // immediately load the whole viz, but then immediately zoom to the random level-2 cluster
   function zoomOnLoad() {
