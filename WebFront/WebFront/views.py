@@ -262,7 +262,7 @@ def Path_to_Data(request):
 								temp['similarity'] = distance
 								dict3["children"].append(temp)
 
-	top_level_node_holder.append(nested_data)
+		top_level_node_holder.append(nested_data)
 
 	nested_data = {"name" : "clusters", "children": top_level_node_holder}
 	return JsonResponse(nested_data)
