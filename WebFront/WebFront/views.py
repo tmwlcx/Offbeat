@@ -20,8 +20,8 @@ from scipy.spatial import distance_matrix
 from scipy.spatial.distance import euclidean
 
 def get_distance_matrix(centers):
-    centers_arr = centers.values[:,1:8]
-    return distance_matrix(centers_arr, centers_arr)
+	centers_arr = centers.values[:,1:8]
+	return distance_matrix(centers_arr, centers_arr)
 
 def get_centers(level1_cluster_size=633, inv=False):
 	assert type(level1_cluster_size) == int
@@ -43,47 +43,47 @@ def get_centers(level1_cluster_size=633, inv=False):
 	return centers
 
 def get_offbeat_clusters(distance_matrix, init_cluster_id=123, how_offbeat=1, level=0):
-    """This function takes the distance matrix, initial cluster id,
-    how_offbeat (1-10 integer), and the cluster level for inputs and
-    returns a list of centers where the distance is on the quantile
-    10% before and including the (how_offbeat / 10). """
-    # inits
+	"""This function takes the distance matrix, initial cluster id,
+	how_offbeat (1-10 integer), and the cluster level for inputs and
+	returns a list of centers where the distance is on the quantile
+	10% before and including the (how_offbeat / 10). """
+	# inits
 	clusters = []
 	levels = [0, 3800, 6328, 7592, 8224]
-    # make sure data types are good and in-range
+	# make sure data types are good and in-range
 	assert type (distance_matrix) == np.ndarray, "Distance Matrix must be Numpy Array"
 	assert init_cluster_id >= levels[level] and init_cluster_id < levels[level+1], "Initial Cluster and Cluster Level Do Not Match"
 	assert type(init_cluster_id) == int , "Initial Cluster ID must be integer" 
 	assert type(how_offbeat) == int, "How Offbeat must be integer from 1-10"
 	assert how_offbeat <= 10 and how_offbeat >= 1, "How Offbeat must be integer from 1-10"
-    #convert offbeat score to quantile
+	#convert offbeat score to quantile
 	offbeat_score = how_offbeat / 10
 	clusters = np.where(np.logical_and(distance_matrix[init_cluster_id, levels[level]:levels[level+1]] >
-                                       np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]],offbeat_score-0.1),
-                                       distance_matrix[init_cluster_id, levels[level]:levels[level+1]] <=
-                                       np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]], offbeat_score)))[0]
+									np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]],offbeat_score-0.1),
+									distance_matrix[init_cluster_id, levels[level]:levels[level+1]] <=
+									np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]], offbeat_score)))[0]
 	clusters = clusters + levels[level]
 	np.random.shuffle(clusters)
 	return clusters.tolist()
 
 def get_top_cluster(centroid_id):
-    query = """
-            SELECT distinct(level3) as level3
-            FROM songs_labeled
-            WHERE level0 = '{}'
-            """.format(centroid_id)
-    pt_data = pd.read_sql(query, conn)
-    return pt_data
+	query = """
+			SELECT distinct(level3) as level3
+			FROM songs_labeled
+			WHERE level0 = '{}'
+			""".format(centroid_id)
+			pt_data = pd.read_sql(query, conn)
+	return pt_data
 
 def get_child_cluster(string_list):
-    query = """
-            SELECT *
-            FROM songs_labeled
-            WHERE level3 IN ({})
+	query = """
+			SELECT *
+			FROM songs_labeled
+			WHERE level3 IN ({})
 			ORDER BY RAND()
-            """.format(string_list)
-    pt_data = pd.read_sql(query, conn)
-    return pt_data
+			""".format(string_list)
+			pt_data = pd.read_sql(query, conn)
+	return pt_data
 
 def get_centroid_values(list_of_vals):
     query = """
