@@ -152,7 +152,7 @@ def Path_to_Data(request):
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
 		nested_data["name"] = int(val)
-		curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
+		curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(val)].values.flatten().tolist()[1:]).reshape(-1,1)])
 		distance = orig_cluster_transform - curr_cluster
 		dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 		names = [feature_Order[i] for i in dist_indexes]
