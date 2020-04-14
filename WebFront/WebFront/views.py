@@ -183,7 +183,7 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level1'])
-		    	curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+			curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 			orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
 			distance = orig_cluster - curr_cluster
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
