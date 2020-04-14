@@ -175,7 +175,7 @@ def Path_to_Data(request):
 	orig_cluster_transform = np.array([float(x) for x in np.array(
 		centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
 	orig_cluster_untransform = np.array([float(x) for x in qt.inverse_transform(
-		np.array(centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1).flatten()).reshape(-1,1)])
+		np.array(centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
