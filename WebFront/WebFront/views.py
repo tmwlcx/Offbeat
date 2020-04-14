@@ -146,13 +146,14 @@ def Path_to_Data(request):
 	set_vals = collapse_columns(children)
 	centers = get_centroid_values(', '.join(["'" +str(x) + "'" for x in set_vals]))
 	top_level_node_holder = []
-	orig_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(centers_all[centers_all["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+	orig_cluster_transform = np.array([float(x) for x in np.array(centers_all[centers_all["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(-1,1)])
+	orig_cluster_untransform = np.array([float(x) for x in qt.inverse_transform(np.array(centers_all[centers_all["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
 		nested_data["name"] = int(val)
-		curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
-		distance = orig_cluster - curr_cluster
+		curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
+		distance = orig_cluster_transform - curr_cluster
 		dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 		names = [feature_Order[i] for i in dist_indexes]
 		distances = [distance[i] for i in dist_indexes]
@@ -163,8 +164,8 @@ def Path_to_Data(request):
 		for val1 in set(children[children['level3']==val]['level2']):
 			temp = {}
 			temp['name'] = int(val1)
-			curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
-			distance = orig_cluster - curr_cluster
+			curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
+			distance = orig_cluster_transform - curr_cluster
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
 			distances = [distance[i] for i in dist_indexes]
@@ -180,8 +181,8 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level1'])
-			curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
-			distance = orig_cluster - curr_cluster
+			curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
+			distance = orig_cluster_transform - curr_cluster
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
 			distances = [distance[i] for i in dist_indexes]
@@ -197,8 +198,8 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level0'])
-			curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
-			distance = orig_cluster - curr_cluster
+			curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
+			distance = orig_cluster_transform - curr_cluster
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
 			distances = [distance[i] for i in dist_indexes]
@@ -221,7 +222,7 @@ def Path_to_Data(request):
 						if dict3["name"] == song_vals1['level0']:
 							if len(dict3["children"]) < limiter:
 								curr_cluster = np.array(centers_all[centers_all["centroid_id"]==int(song_vals1['level0'])]).flatten()[1:9]
-								distance = euclidean(orig_cluster.flatten(), curr_cluster) / scaling_factor
+								distance = euclidean(orig_cluster_transform.flatten(), curr_cluster) / scaling_factor
 								temp['similarity'] = distance
 								dict3["children"].append(temp)
 
