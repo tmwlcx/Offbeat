@@ -154,10 +154,13 @@ def Path_to_Data(request):
 	scaling_factor = np.max(distances_all[lvl3_int:lvl3_int+1,:])
 
 	# Take a slice of the distance matrix for top level clusters only
-	useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1), (lvl3_int-top_starts):]
+	#useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1), (lvl3_int-top_starts):]
 	# Do a skip step across the useful distances, sized based on the wildness the user chose
-	indices = np.argsort(useful_distances)[:,1:(wildness*60):int((wildness*60)/max_top_levels)].flatten().tolist()
-	indices = [x + top_starts for x in indices]
+	#indices = np.argsort(useful_distances)[:,1:(wildness*60):int((wildness*60)/max_top_levels)].flatten().tolist()
+	#indices = [x + top_starts for x in indices]
+	
+	indices = get_offbeat_clusters(distances_all, init_cluster_id=lvl3_int, how_offbeat=wildness, level=3)
+	
 	# Add the focus level 3
 	indices.append(lvl3.values.flatten().tolist()[0])
 	# Flatten the indices of the centers into a text string for SQL querying
