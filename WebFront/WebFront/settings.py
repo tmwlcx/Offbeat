@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['propane-ground-269323.appspot.com'
 				, 'localhost'
+		 		, '127.0.0.1'
 				]
 
 
