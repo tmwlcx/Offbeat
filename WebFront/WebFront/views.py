@@ -62,7 +62,8 @@ def get_offbeat_clusters(distance_matrix, init_cluster_id=123, how_offbeat=1, le
                                        np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]],offbeat_score-0.1),
                                        distance_matrix[init_cluster_id, levels[level]:levels[level+1]] <=
                                        np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]], offbeat_score)))[0]
-    np.random.shuffle(clusters)
+    clusters = clusters + levels[level]
+	np.random.shuffle(clusters)
     return clusters.tolist()
 
 def get_top_cluster(centroid_id):
@@ -181,11 +182,11 @@ def Path_to_Data(request):
 		nested_data = {}
 		nested_data["name"] = int(val)
 		curr_cluster = np.array([float(x) for x in np.array(
-			centers[centers["centroid_id"]==int(val)].values.flatten().tolist()[1:]).reshape(1,-1)])
+			centers[centers["centroid_id"]==int(val)].values.flatten().tolist()[1:])])
 		distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1)
 		dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 		names = [feature_Order[i] for i in dist_indexes]
-		distances = [distance[i] for i in dist_indexes]
+		distances = [distance.flatten()[i] for i in dist_indexes]
 		nested_data["features"] = {k : v for k, v in zip(names, distances)}
 		nested_data["children"] = []
 
@@ -194,11 +195,11 @@ def Path_to_Data(request):
 			temp = {}
 			temp['name'] = int(val1)
 			curr_cluster = np.array([float(x) for x in np.array(
-				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
+				centers[centers["centroid_id"]==int(temp['name'])].values.flatten().tolist()[1:])])
 			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
-			distances = [distance[i] for i in dist_indexes]
+			distances = [distance.flatten()[i] for i in dist_indexes]
 			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			nested_data["children"].append(temp)
@@ -212,11 +213,12 @@ def Path_to_Data(request):
 			temp = {}
 			temp['name'] = int(song_vals1['level1'])
 			curr_cluster = np.array([float(x) for x in np.array(
-				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
+				centers[centers["centroid_id"]==int(temp['name'])].values.flatten().tolist()[1:])])
+			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1).flatten()
 			distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
-			distances = [distance[i] for i in dist_indexes]
+			distances = [distance.flatten()[i] for i in dist_indexes]
 			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			for dict1 in nested_data["children"]:
@@ -230,11 +232,12 @@ def Path_to_Data(request):
 			temp = {}
 			temp['name'] = int(song_vals1['level0'])
 			curr_cluster = np.array([float(x) for x in np.array(
-				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
+				centers[centers["centroid_id"]==int(temp['name'])].values.flatten().tolist()[1:])])
+			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1).flatten()
 			distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
-			distances = [distance[i] for i in dist_indexes]
+			distances = [distance.flatten()[i] for i in dist_indexes]
 			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			for dict1 in nested_data["children"]:
@@ -259,7 +262,7 @@ def Path_to_Data(request):
 								temp['similarity'] = distance
 								dict3["children"].append(temp)
 
-		top_level_node_holder.append(nested_data)
+	top_level_node_holder.append(nested_data)
 
-		nested_data = {"name" : "clusters", "children": top_level_node_holder}
+	nested_data = {"name" : "clusters", "children": top_level_node_holder}
 	return JsonResponse(nested_data)
