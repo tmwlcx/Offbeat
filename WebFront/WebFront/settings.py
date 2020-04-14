@@ -26,7 +26,8 @@ SECRET_KEY = 'dpt3a+6kab&y=dogt!q(m^ip4rd#jd8$qm(*1hh-yz3d1=+jq&'
 DEBUG = True
 
 ALLOWED_HOSTS = ['propane-ground-269323.appspot.com'
-				#, 'localhost'
+				, 'localhost'
+		 		, '127.0.0.1'
 				]
 
 

@@ -20,8 +20,8 @@ from scipy.spatial import distance_matrix
 from scipy.spatial.distance import euclidean
 
 def get_distance_matrix(centers):
-    centers_arr = centers.values[:,1:8]
-    return distance_matrix(centers_arr, centers_arr)
+	centers_arr = centers.values[:,1:8]
+	return distance_matrix(centers_arr, centers_arr)
 
 def get_centers(level1_cluster_size=633, inv=False):
 	assert type(level1_cluster_size) == int
@@ -43,46 +43,47 @@ def get_centers(level1_cluster_size=633, inv=False):
 	return centers
 
 def get_offbeat_clusters(distance_matrix, init_cluster_id=123, how_offbeat=1, level=0):
-    """This function takes the distance matrix, initial cluster id,
-    how_offbeat (1-10 integer), and the cluster level for inputs and
-    returns a list of centers where the distance is on the quantile
-    10% before and including the (how_offbeat / 10). """
-    # inits
-    clusters = []
-    levels = [0, 3800, 6328, 7592, 8224]
-    # make sure data types are good and in-range
-    assert type (distance_matrix) == np.ndarray, "Distance Matrix must be Numpy Array"
-    assert init_cluster_id >= levels[level] and init_cluster_id < levels[level+1], "Initial Cluster and Cluster Level Do Not Match"
-    assert type(init_cluster_id) == int , "Initial Cluster ID must be integer" 
-    assert type(how_offbeat) == int, "How Offbeat must be integer from 1-10"
-    assert how_offbeat <= 10 and how_offbeat >= 1, "How Offbeat must be integer from 1-10"
-    #convert offbeat score to quantile
-    offbeat_score = how_offbeat / 10
-    clusters = np.where(np.logical_and(distance_matrix[init_cluster_id, levels[level]:levels[level+1]] >
-                                       np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]],offbeat_score-0.1),
-                                       distance_matrix[init_cluster_id, levels[level]:levels[level+1]] <=
-                                       np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]], offbeat_score)))[0]
-    np.random.shuffle(clusters)
-    return clusters.tolist()
+	"""This function takes the distance matrix, initial cluster id,
+	how_offbeat (1-10 integer), and the cluster level for inputs and
+	returns a list of centers where the distance is on the quantile
+	10% before and including the (how_offbeat / 10). """
+	# inits
+	clusters = []
+	levels = [0, 3800, 6328, 7592, 8224]
+	# make sure data types are good and in-range
+	assert type (distance_matrix) == np.ndarray, "Distance Matrix must be Numpy Array"
+	assert init_cluster_id >= levels[level] and init_cluster_id < levels[level+1], "Initial Cluster and Cluster Level Do Not Match"
+	assert type(init_cluster_id) == int , "Initial Cluster ID must be integer" 
+	assert type(how_offbeat) == int, "How Offbeat must be integer from 1-10"
+	assert how_offbeat <= 10 and how_offbeat >= 1, "How Offbeat must be integer from 1-10"
+	#convert offbeat score to quantile
+	offbeat_score = how_offbeat / 10
+	clusters = np.where(np.logical_and(distance_matrix[init_cluster_id, levels[level]:levels[level+1]] >
+									np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]],offbeat_score-0.1),
+									distance_matrix[init_cluster_id, levels[level]:levels[level+1]] <=
+									np.quantile(distance_matrix[init_cluster_id, levels[level]:levels[level+1]], offbeat_score)))[0]
+	clusters = clusters + levels[level]
+	np.random.shuffle(clusters)
+	return clusters.tolist()
 
 def get_top_cluster(centroid_id):
-    query = """
-            SELECT distinct(level3) as level3
-            FROM songs_labeled
-            WHERE level0 = '{}'
-            """.format(centroid_id)
-    pt_data = pd.read_sql(query, conn)
-    return pt_data
+	query = """
+			SELECT distinct(level3) as level3
+			FROM songs_labeled
+			WHERE level0 = '{}'
+			""".format(centroid_id)
+	pt_data = pd.read_sql(query, conn)
+	return pt_data
 
 def get_child_cluster(string_list):
-    query = """
-            SELECT *
-            FROM songs_labeled
-            WHERE level3 IN ({})
+	query = """
+			SELECT *
+			FROM songs_labeled
+			WHERE level3 IN ({})
 			ORDER BY RAND()
-            """.format(string_list)
-    pt_data = pd.read_sql(query, conn)
-    return pt_data
+			""".format(string_list)
+	pt_data = pd.read_sql(query, conn)
+	return pt_data
 
 def get_centroid_values(list_of_vals):
     query = """
@@ -159,7 +160,7 @@ def Path_to_Data(request):
 	#indices = np.argsort(useful_distances)[:,1:(wildness*60):int((wildness*60)/max_top_levels)].flatten().tolist()
 	#indices = [x + top_starts for x in indices]
 	
-	indices = get_offbeat_clusters(distances_all, init_cluster_id=lvl3_int, how_offbeat=wildness, level=3)
+	indices = get_offbeat_clusters(distances_all, init_cluster_id=lvl3_int, how_offbeat=wildness, level=3)[0:max_top_levels]
 	
 	# Add the focus level 3
 	indices.append(lvl3.values.flatten().tolist()[0])
@@ -172,17 +173,20 @@ def Path_to_Data(request):
 	set_vals = collapse_columns(children)
 	centers = get_centroid_values(', '.join(["'" +str(x) + "'" for x in set_vals]))
 	top_level_node_holder = []
-	orig_cluster_transform = np.array([float(x) for x in np.array(centers_all[centers_all["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(-1,1)])
-	orig_cluster_untransform = np.array([float(x) for x in qt.inverse_transform(np.array(centers_all[centers_all["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+	orig_cluster_transform = np.array([float(x) for x in np.array(
+		centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
+	orig_cluster_untransform = np.array([float(x) for x in qt.inverse_transform(
+		np.array(centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
 		nested_data["name"] = int(val)
-		curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(val)].values.flatten().tolist()[1:]).reshape(-1,1)])
-		distance = orig_cluster_transform - curr_cluster
+		curr_cluster = np.array([float(x) for x in np.array(
+			centers[centers["centroid_id"]==int(val)].values.flatten().tolist()[1:])])
+		distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1)
 		dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 		names = [feature_Order[i] for i in dist_indexes]
-		distances = [distance[i] for i in dist_indexes]
+		distances = [distance.flatten()[i] for i in dist_indexes]
 		nested_data["features"] = {k : v for k, v in zip(names, distances)}
 		nested_data["children"] = []
 
@@ -190,11 +194,12 @@ def Path_to_Data(request):
 		for val1 in set(children[children['level3']==val]['level2']):
 			temp = {}
 			temp['name'] = int(val1)
-			curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
-			distance = orig_cluster_transform - curr_cluster
+			curr_cluster = np.array([float(x) for x in np.array(
+				centers[centers["centroid_id"]==int(temp['name'])].values.flatten().tolist()[1:])])
+			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
-			distances = [distance[i] for i in dist_indexes]
+			distances = [distance.flatten()[i] for i in dist_indexes]
 			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			nested_data["children"].append(temp)
@@ -207,11 +212,13 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level1'])
-			curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
-			distance = orig_cluster_transform - curr_cluster
+			curr_cluster = np.array([float(x) for x in np.array(
+				centers[centers["centroid_id"]==int(temp['name'])].values.flatten().tolist()[1:])])
+			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1).flatten()
+			distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
-			distances = [distance[i] for i in dist_indexes]
+			distances = [distance.flatten()[i] for i in dist_indexes]
 			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			for dict1 in nested_data["children"]:
@@ -224,11 +231,13 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level0'])
-			curr_cluster = np.array([float(x) for x in np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(-1,1)])
-			distance = orig_cluster_transform - curr_cluster
+			curr_cluster = np.array([float(x) for x in np.array(
+				centers[centers["centroid_id"]==int(temp['name'])].values.flatten().tolist()[1:])])
+			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1).flatten()
+			distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
-			distances = [distance[i] for i in dist_indexes]
+			distances = [distance.flatten()[i] for i in dist_indexes]
 			temp["features"] = {k : v for k, v in zip(names, distances)}
 			temp['children'] = []
 			for dict1 in nested_data["children"]:
@@ -247,12 +256,13 @@ def Path_to_Data(request):
 					for dict3 in dict2["children"]:
 						if dict3["name"] == song_vals1['level0']:
 							if len(dict3["children"]) < limiter:
-								curr_cluster = np.array(centers_all[centers_all["centroid_id"]==int(song_vals1['level0'])]).flatten()[1:9]
+								curr_cluster = np.array(
+									centers[centers["centroid_id"]==int(song_vals1['level0'])]).flatten()[1:9]
 								distance = euclidean(orig_cluster_transform.flatten(), curr_cluster) / scaling_factor
 								temp['similarity'] = distance
 								dict3["children"].append(temp)
 
 		top_level_node_holder.append(nested_data)
 
-		nested_data = {"name" : "clusters", "children": top_level_node_holder}
+	nested_data = {"name" : "clusters", "children": top_level_node_holder}
 	return JsonResponse(nested_data)
