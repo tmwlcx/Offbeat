@@ -464,7 +464,21 @@ function drawGraph(res_data) {
   .attr("class", "label")
   .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
   .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
-  for (i=0; i<3; i++) {
+  text.append("tspan")
+    .text(function(d) {
+      if (d.height > 0 && d.depth > 0) {
+        var obj = d.data.features;
+        var first_key = Object.keys(obj)[0];
+        var first_val = obj[first_key];
+        var sign = (first_val >= 0) ? "+" : "-";
+        return sign + first_key;
+      } else {return "";}
+    })
+    .attr("x", 0)
+    .attr("dx", 0)
+    .attr("dy", -15)
+    .attr("text-anchor", "middle");
+  for (i=1; i<3; i++) {
     text.append("tspan")
       .text(function(d) {
         if (d.height > 0 && d.depth > 0) {
