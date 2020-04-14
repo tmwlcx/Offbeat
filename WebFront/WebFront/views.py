@@ -173,16 +173,16 @@ def Path_to_Data(request):
 	centers = get_centroid_values(', '.join(["'" +str(x) + "'" for x in set_vals]))
 	top_level_node_holder = []
 	orig_cluster_transform = np.array([float(x) for x in np.array(
-		centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1)])
+		centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
 	orig_cluster_untransform = np.array([float(x) for x in qt.inverse_transform(
-		np.array(centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+		np.array(centers[centers["centroid_id"]==lvl3_int].values.flatten().tolist()[1:]).reshape(1,-1).flatten()).reshape(-1,1)])
 
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
 		nested_data["name"] = int(val)
 		curr_cluster = np.array([float(x) for x in np.array(
 			centers[centers["centroid_id"]==int(val)].values.flatten().tolist()[1:]).reshape(1,-1)])
-		distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1)
+		distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1)
 		dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 		names = [feature_Order[i] for i in dist_indexes]
 		distances = [distance[i] for i in dist_indexes]
@@ -194,8 +194,8 @@ def Path_to_Data(request):
 			temp = {}
 			temp['name'] = int(val1)
 			curr_cluster = np.array([float(x) for x in np.array(
-				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)])
-			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1)
+				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
+			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
 			distances = [distance[i] for i in dist_indexes]
@@ -212,8 +212,8 @@ def Path_to_Data(request):
 			temp = {}
 			temp['name'] = int(song_vals1['level1'])
 			curr_cluster = np.array([float(x) for x in np.array(
-				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)])
-			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1)
+				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
+			distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
 			distances = [distance[i] for i in dist_indexes]
@@ -230,8 +230,8 @@ def Path_to_Data(request):
 			temp = {}
 			temp['name'] = int(song_vals1['level0'])
 			curr_cluster = np.array([float(x) for x in np.array(
-				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)])
-			distance = orig_cluster_transform.reshape(1,-1) - curr_cluster.reshape(1,-1)
+				centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1).flatten()])
+			distance = orig_cluster_transform.reshape(1,-1).flatten() - curr_cluster.reshape(1,-1).flatten()
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
 			names = [feature_Order[i] for i in dist_indexes]
 			distances = [distance[i] for i in dist_indexes]
