@@ -159,7 +159,7 @@ def Path_to_Data(request):
 	#indices = np.argsort(useful_distances)[:,1:(wildness*60):int((wildness*60)/max_top_levels)].flatten().tolist()
 	#indices = [x + top_starts for x in indices]
 	
-	indices = get_offbeat_clusters(distances_all, init_cluster_id=lvl3_int, how_offbeat=wildness, level=3)
+	indices = get_offbeat_clusters(distances_all, init_cluster_id=lvl3_int, how_offbeat=wildness, level=3)[0:max_top_levels]
 	
 	# Add the focus level 3
 	indices.append(lvl3.values.flatten().tolist()[0])
