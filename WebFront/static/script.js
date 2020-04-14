@@ -59,7 +59,7 @@ $.ajax({
       beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + _token );},
       success: function(tracks) {
 
-        var features = ['danceability', 'energy', 'speechiness', 'acousticness', 'liveness', 'valence', 'loudness', 'tempo'];
+        var features = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']
 
         // compute averages
         tracks.audio_features.map(function(song) {
@@ -458,28 +458,16 @@ function drawGraph(res_data) {
     });
   circles_svg.call(song_tip);
 
-  var text = g.selectAll("text")
-    .data(nodes)
-    .enter().append("text")
-    .attr("class", "label")
-    .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
-    .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
-  for (i=0; i<3; i++) {
-    text.append("tspan")
-      .text(function(d) {
-        if (d.height > 0 && d.depth > 0) {
-          var obj = d.data.features;
-          var first_key = Object.keys(obj)[i];
-          var first_val = obj[first_key];
-          var sign = (first_val >= 0) ? "+" : "-";
-          return sign + first_key;
-        } else {return "";}
-      })
-      .attr("x", 0)
-      .attr("dx", 0)
-      .attr("dy", 15)
-      .attr("text-anchor", "middle");
-  }
+  // var text = g.selectAll("text")
+  //   .data(nodes)
+  //   .enter().append("text")
+  //   .attr("class", "label")
+  //   .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
+  //   .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
+  //   //.style("display", function(d) { return "none"; }) // hide all text
+  //   .text(function(d) {
+  //     return d.data.hasOwnProperty('similarity') ? "..." + d.data.name.slice(-4) + ": " + d.data.similarity : d.data.name;
+  //   });
 
   var node = g.selectAll("circle,text");
 
@@ -520,12 +508,12 @@ function drawGraph(res_data) {
           const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
           return t => zoomTo(i(t));
         });
-    text
-      .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
-      .transition(transition)
-        .style("fill-opacity", d => d.parent === focus ? 1 : 0)
-        .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
-        .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+    // text
+    //   .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+    //   .transition(transition)
+    //     .style("fill-opacity", d => d.parent === focus ? 1 : 0)
+    //     .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+    //     .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
   }
 
 

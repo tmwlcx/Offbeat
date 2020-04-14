@@ -56,6 +56,7 @@ def get_child_cluster(string_list):
             SELECT *
             FROM songs_labeled
             WHERE level3 IN ({})
+			ORDER BY RAND()
             """.format(string_list)
     pt_data = pd.read_sql(query, conn)
     return pt_data
@@ -110,7 +111,6 @@ def Home(request):
 @csrf_exempt
 def Path_to_Data(request):
 
-
 	data = json.loads(request.body)
 	qt = load(os.path.join(settings.BASE_DIR, r"static/qt.pickle"))
 
@@ -118,21 +118,19 @@ def Path_to_Data(request):
 	wildness = int(data['how_offbeat'])
 	# The Users cluster center
 	data = np.array(list(data["Values"].values()))
-	user_data = qt.transform(data.reshape(1,-1))
+	user_data = qt.transform(data.reshape(1, -1))
 	centroid = get_closest_centroid(centers_bottom, user_data)
 	song = get_point_data(centroid)
-
 	lvl3 = get_top_cluster(song)
-	#lvl3 = get_top_cluster(258)
 	lvl3_int = int(lvl3['level3'].tolist()[0])
 	top_starts = 7591
 	maximum_points = 1000
 	max_top_levels = 6
 	limiter = 10
-	scaling_factor = np.max(distances_all)
+	scaling_factor = np.max(distances_all[lvl3_int:lvl3_int+1,:])
 
 	# Take a slice of the distance matrix for top level clusters only
-	useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1),(lvl3_int-top_starts):]
+	useful_distances = distances_top[(lvl3_int-top_starts):(lvl3_int-top_starts+1), (lvl3_int-top_starts):]
 	# Do a skip step across the useful distances, sized based on the wildness the user chose
 	indices = np.argsort(useful_distances)[:,1:(wildness*60):int((wildness*60)/max_top_levels)].flatten().tolist()
 	indices = [x + top_starts for x in indices]
@@ -146,13 +144,13 @@ def Path_to_Data(request):
 	children = get_child_cluster(indices_text)
 	set_vals = collapse_columns(children)
 	centers = get_centroid_values(', '.join(["'" +str(x) + "'" for x in set_vals]))
-
+	feature_Order = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']
 	top_level_node_holder = []
 
 	for val in All_Level_3_Centers['centroid_id']:
 		nested_data = {}
 		nested_data["name"] = int(val)
-		curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+		curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(All_Level_3_Centers[All_Level_3_Centers["centroid_id"]==int(nested_data["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 		orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
 		distance = orig_cluster - curr_cluster
 		dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
@@ -165,7 +163,7 @@ def Path_to_Data(request):
 		for val1 in set(children[children['level3']==val]['level2']):
 			temp = {}
 			temp['name'] = int(val1)
-			curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+			curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 			orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
 			distance = orig_cluster - curr_cluster
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
@@ -183,7 +181,7 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level1'])
-			curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+		    curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 			orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
 			distance = orig_cluster - curr_cluster
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
@@ -201,7 +199,7 @@ def Path_to_Data(request):
 		for discard, song_vals1 in next_level.iterrows():
 			temp = {}
 			temp['name'] = int(song_vals1['level0'])
-			curr_cluster = np.array([int(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
+			curr_cluster = np.array([float(x) for x in qt.inverse_transform(np.array(centers[centers["centroid_id"]==int(temp["name"])].values.flatten().tolist()[1:]).reshape(1,-1)).reshape(-1,1)])
 			orig_cluster = np.array(centers_all[centers_all["centroid_id"]==lvl3_int]).flatten()[1:9]
 			distance = orig_cluster - curr_cluster
 			dist_indexes = list(np.argsort(np.abs(distance)).reshape(1,-1).flatten())[0:3]
