@@ -72,7 +72,7 @@ def get_top_cluster(centroid_id):
 			FROM songs_labeled
 			WHERE level0 = '{}'
 			""".format(centroid_id)
-			pt_data = pd.read_sql(query, conn)
+	pt_data = pd.read_sql(query, conn)
 	return pt_data
 
 def get_child_cluster(string_list):
@@ -82,7 +82,7 @@ def get_child_cluster(string_list):
 			WHERE level3 IN ({})
 			ORDER BY RAND()
 			""".format(string_list)
-			pt_data = pd.read_sql(query, conn)
+	pt_data = pd.read_sql(query, conn)
 	return pt_data
 
 def get_centroid_values(list_of_vals):
