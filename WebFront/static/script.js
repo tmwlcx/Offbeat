@@ -59,7 +59,9 @@ $.ajax({
       beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + _token );},
       success: function(tracks) {
 
-        var features = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']
+        //var features = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']
+        // put back to original order
+        var features = ['danceability', 'energy', 'speechiness', 'acousticness', 'liveness', 'valence', 'loudness', 'tempo'];
 
         // compute averages
         tracks.audio_features.map(function(song) {
