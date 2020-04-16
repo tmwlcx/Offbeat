@@ -26,7 +26,7 @@ Python class that performs acquisition of song data and uses [MiniBatchKMeans](h
 >
 >>**songfile : *Path, default=None***
 >>
->>    &nbsp;&nbsp;&nbsp;&nbsp;the path to a .csv file containing songs data downloaded from the spotify api
+>>    &nbsp;&nbsp;&nbsp;&nbsp;the path to a .csv file containing songs data downloaded from the Spotify API.
 >>
 >>---
 >>
@@ -38,19 +38,19 @@ Python class that performs acquisition of song data and uses [MiniBatchKMeans](h
 >>
 >>**user : *string, default='teameleven'***
 >>
->>    &nbsp;&nbsp;&nbsp;&nbsp;The username to connect to the database
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The username to connect to the database.
 >>
 >>---
 >>
 >>**password : *string, default='dbpassword'***
 >>
->>    &nbsp;&nbsp;&nbsp;&nbsp;The database user's password
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The database user's password.
 >>
 >>---
 >>
 >>**database : *string, default='SPOTIFY'***
 >>
->>    &nbsp;&nbsp;&nbsp;&nbsp;The name of the database
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The name of the database.
 >>
 >>---
 >
@@ -203,7 +203,7 @@ Python class that performs acquisition of song data and uses [MiniBatchKMeans](h
 
 
 **beat\_master**(*\*\*kwargs*)
->    Runs the entire clustering and saving operation. Accepts *\*\*kwargs* from any function in the Offbeatr class
+>    Runs the entire clustering and saving operation. Accepts *\*\*kwargs* from any function in the Offbeatr class.
 >
 >
 >#### Returns:
