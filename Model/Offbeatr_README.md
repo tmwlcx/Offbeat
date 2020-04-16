@@ -13,15 +13,15 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 
 ### Methods:
 
->\_\_init\_\_(*self, random_state*)
+>**\_\_init\_\_**(*self, random_state*)
 >>Initialize self.
 >---
 >get\_songs(*self, songfile=None, host='35.198.88.209', user='teameleven', password='dbpassword', database='SPOTIFY'*)
 >>Get songs, either from a connection to the database or with a local .csv file containing the required songs data that returns from the spotify API.
 >
->>---
+>>
 >>### Parameters:
->>---
+>>
 >>**songfile : *Path, default=None***
 >>    the path to a .csv file containing songs data downloaded from the spotify api
 >>
@@ -38,4 +38,4 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >>    The name of the database
 >>
 >>---
->get\_starting\_clusters(*self, mb_kmeans_n_clusters=25000, random_state=0, batch_size=1000000, verbose=False*)
+>**get\_starting\_clusters**(*self, mb_kmeans_n_clusters=25000, random_state=0, batch_size=1000000, verbose=False*)
