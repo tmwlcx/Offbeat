@@ -35,6 +35,7 @@ class Offbeatr(object):
         qt = QuantileTransformer(output_distribution='normal',random_state=self.rng)
         self.raw_data = qt.fit_transform(np.array(self.songs[self.keepers]))
         dump(qt, 'qt.pickle')
+        print("Saved transformer to file: 'qt.pickle'")
 
 
     def get_starting_clusters(self, mb_kmeans_n_clusters=25000, random_state=0, 
@@ -103,6 +104,15 @@ class Offbeatr(object):
         self.export_csv(save_songs, save_centroids, num_parts)
         print('done!')
 
-        
+# run it        
 off_beat = Offbeatr()
 off_beat.beat_master()
+            
+            
+            
+
+        
+        
+        
+        
+        
