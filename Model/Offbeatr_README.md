@@ -11,7 +11,7 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 
 ---
 
-## Methods:
+### Methods:
 
 >\_\_init\_\_(*self, random_state*)
 >>Initialize self.
@@ -19,16 +19,21 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >get\_songs(*self, songfile=None, host='35.198.88.209', user='teameleven', password='dbpassword', database='SPOTIFY'*)
 >>Get songs, either from a connection to the database or with a local .csv file containing the required songs data that returns from the spotify API.
 
->>## Parameters:
+>>### Parameters:
+>>
 >>**songfile : *Path, default=None***
 >>    the path to a .csv file containing songs data downloaded from the spotify api
+>>
 >>**host : *string***
 >>    The hostname or IP address of the database containing spotify API song data. Note that for security reasons, to connect to the default database your own IP address must have been previously whitelisted with the Team 11 Google Cloud account. 
+>>
 >>**user : *string***
 >>    The username to connect to the database
+>>
 >>**password : *string***
 >>    The database user's password
+>>
 >>**database : *string***
 >>    The name of the database
-
+>>
 >get\_starting\_clusters(*self, mb_kmeans_n_clusters=25000, random_state=0, batch_size=1000000, verbose=False*)
