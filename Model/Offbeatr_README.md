@@ -11,14 +11,13 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 
 ---
 
-### Methods:
+## Methods:
 
 >**\_\_init\_\_**(*self, random_state*)
 >>Initialize self.
 >---
 >get\_songs(*self, songfile=None, host='35.198.88.209', user='teameleven', password='dbpassword', database='SPOTIFY'*)
 >>Get songs, either from a connection to the database or with a local .csv file containing the required songs data that returns from the spotify API.
->
 >>
 >>### Parameters:
 >>
