@@ -25,18 +25,23 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >#### Parameters:
 >
 >>**songfile : *Path, default=None***
+>>
 >>    the path to a .csv file containing songs data downloaded from the spotify api
 >>
 >>**host : *string, default='35.198.88.209'***
+>>
 >>    The hostname or IP address of the database containing spotify API song data. Note that for security reasons, to connect to the default database your own IP address must have been previously whitelisted with the Team 11 Google Cloud account. 
 >>
 >>**user : *string, default='teameleven'***
+>>
 >>    The username to connect to the database
 >>
 >>**password : *string, default='dbpassword'***
+>>
 >>    The database user's password
 >>
 >>**database : *string, default='SPOTIFY'***
+>>
 >>    The name of the database
 >>
 >
