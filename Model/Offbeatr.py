@@ -11,13 +11,15 @@ class Offbeatr(object):
         self.rng = np.random.RandomState(random_state)
         self.keepers = ['danceability', 'energy', 'loudness', 'speechiness','acousticness', \
                         'liveness', 'valence', 'tempo']
-        self.p = len(self.keepers)
-        self.qt = QuantileTransformer(output_distribution='normal',random_state=self.rng)
         
-    def get_songs(self, songfile=None, host='35.196.88.209', user='teameleven', password='dbpassword', database='SPOTIFY'):
-        """As a security measure, IP must be whitelisted in Google cloud prior to getting song data"""
+    def get_songs(self, songfile=None, host='35.196.88.209', user='teameleven', 
+                  password='dbpassword', database='SPOTIFY'):
+        
+        """As a security measure, IP must be whitelisted in Google cloud prior to 
+        getting song data"""
         if not songfile:
-            conn = pymysql.connect(host='35.196.88.209', user='teameleven', password='dbpassword', database='SPOTIFY')
+            conn = pymysql.connect(host='35.196.88.209', user='teameleven', \
+                                   password='dbpassword', database='SPOTIFY')
             query = """
                     SELECT * 
                     FROM songs
@@ -30,7 +32,10 @@ class Offbeatr(object):
             self.songs = pd.read_csv(songfile, skiprows=[1])
         self.N = self.songs.shape[0]
         self.songs_labeled_ = self.songs[['song_id']].copy()
-        self.raw_data = self.qt.fit_transform(np.array(self.songs[self.keepers]))      
+        qt = QuantileTransformer(output_distribution='normal',random_state=self.rng)
+        self.raw_data = qt.fit_transform(np.array(self.songs[self.keepers]))
+        dump(qt, 'qt.pickle')
+
 
     def get_starting_clusters(self, mb_kmeans_n_clusters=25000, random_state=0, 
                               batch_size=100000, verbose=0):
@@ -44,7 +49,7 @@ class Offbeatr(object):
         """Run the aglomerative clustering algorithm"""
         #inits
         num_levels = len(cluster_sizes)
-        centroids = np.zeros((sum(cluster_sizes), self.p))
+        centroids = np.zeros((sum(cluster_sizes), len(self.keepers)))
         fit_list=[]
         colnames = []
         
@@ -72,7 +77,6 @@ class Offbeatr(object):
         
     def export_csv(self, save_songs=True, save_centroids=True, num_parts=20):
         #save transformer object as pickle
-        dump(self.qt, 'qt.pickle')
         if save_songs == True and save_centroids == True:
             print("creating 'songs_labeled_{id}.csv' and 'centroids.csv'")
             for id, df_i in  enumerate(np.array_split(self.songs_labeled_, num_parts)):
