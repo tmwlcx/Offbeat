@@ -53,28 +53,38 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >>    &nbsp;&nbsp;&nbsp;&nbsp;The name of the database
 >>
 >>---
->>
+>
 >
 >#### Returns:
 >
 >>**self**
 >>
+>>---
+>>
 >>**qt.pickle**
->>    Saves a local file called *'qt.pickle'* that can be used to read in new data using the same transform.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;Saves a local file called *'qt.pickle'* that can be used to read in new data using the same transform.
 >>
 >
 >
 >#### Attributes:
 >
 >>**N : *int***
->>    The number of songs in the data.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The number of songs in the data.
+>>
+>>---
 >>
 >>**songs : *pandas.DataFrame, shape(N, p)***
->>    A pandas dataframe containing N rows and p attributes read in from the database.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;A pandas dataframe containing N rows and p attributes read in from the database.
+>>
+>>---
 >>
 >>**raw_data : *numpy.ndarray, shape(N,8)***
->>    Returns normalized data for each of 8 features. Features are *'danceability'*, *'energy'*, *'loudness'*, *'speechiness'*,*'acousticness'*, *'liveness'*, *'valence'*, *'tempo'*. This data is normalized using the Scikit-learn library's QuantileTransformer power transformer function.
->
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;Returns normalized data for each of 8 features. Features are *'danceability'*, *'energy'*, *'loudness'*, *'speechiness'*,*'acousticness'*, *'liveness'*, *'valence'*, *'tempo'*. This data is normalized using the Scikit-learn library's QuantileTransformer power transformer function.
+>>
 >---
 
 
@@ -84,32 +94,52 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >#### Parameters:
 >
 >>**mb\_kmeans\_n\_clusters : *int, default=25000***
->>    The number of initial seed clusters to create from the song file. Lower values are less representative of the song data, but provide substantial increase in performance. 
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The number of initial seed clusters to create from the song file. Lower values are less representative of the song data, but provide substantial increase in performance. 
+>>
+>>---
 >>
 >>**random\_state : *int, default=0***
->>    The random state initialization of the mini batch kmeans engine. 
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The random state initialization of the mini batch kmeans engine. 
+>>
+>>---
 >>
 >>**batch\_size : *int, default=100000***
->>    The batch size for each run of the minibatch kmeans algorithm. Lower values help prevent out-of-memory errors. 
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The batch size for each run of the minibatch kmeans algorithm. Lower values help prevent out-of-memory errors. 
+>>
+>>---
 >>
 >>**verbose : *boolean, default=False***
->>    Whether to print the status of the mini batch KMeans algorithm as it fits and predicts the data. 
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;Whether to print the status of the mini batch KMeans algorithm as it fits and predicts the data. 
+>>
+>>---
+>
 >
 >
 >#### Returns:
 >
 >>**self**
+>>
+>>---
+>
 >
 >
 >#### Attributes:
 >
 >>**mb_kmeans : *sklearn MiniBatchKMeans object***
->>    See [sklearn](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html) for more information on this object.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;See [sklearn](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html) for more information on this object.
+>>
+>>---
 >>
 >>**preds : *numpy.ndarray, shape(num_songs,)***
->>    Seed cluster labels for each of the songs as determined by the MiniBatchKMeans algorithm.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;Seed cluster labels for each of the songs as determined by the MiniBatchKMeans algorithm.
 >
->
+>---
 
 
 **agglom\_clusters**(*self, cluster_sizes=[3800,2528,1264,632]*)
@@ -118,21 +148,26 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >#### Parameters:
 >
 >>**cluster\_sizes : *list of ints, default=[3800,2528,1264,632]***
->>    A list of integers containing the cluster sizes for each level. The number of levels is derived from the structure of this list. The default values are for 4 levels and were chosen based on the loose number of 1264 genres of music. See [here](https://www.theguardian.com/music/2014/sep/04/-sp-from-charred-death-to-deep-filthstep-the-1264-genres-that-make-modern-music) for more information.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;A list of integers containing the cluster sizes for each level. The number of levels is derived from the structure of this list. The default values are for 4 levels and were chosen based on the loose number of 1264 genres of music. See [here](https://www.theguardian.com/music/2014/sep/04/-sp-from-charred-death-to-deep-filthstep-the-1264-genres-that-make-modern-music) for more information.
 >
 >---
 >#### Returns:
 >
 >>**self**
->
+> ---
 >
 >#### Attributes:
 >
 >>**songs_labeled_ : *pandas.DataFrame, shape(N, number_levels)***
->>    A Pandas DataFrame object containing all N songs in the dataset and their corresponding number_levels of levels. 
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;A Pandas DataFrame object containing all N songs in the dataset and their corresponding number_levels of levels. 
+>>
+>>---
 >>
 >>**centroids_ : *pandas.DataFrame, shape(sum(cluster_sizes), 8)***
->>    A Pandas DataFrame object containing the centroids computed for every label.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;A Pandas DataFrame object containing the centroids computed for every label.
 >
 >---
 
@@ -143,14 +178,21 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >#### Parameters:
 >
 >>**save_songs : *boolean, default=True***
->>    Whether to save the *songs_labeled_* DataFrame object. Depending on the value of **num_parts**, this file can be broken down into multiple files for easier transfer.
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;Whether to save the *songs_labeled_* DataFrame object. Depending on the value of **num_parts**, this file can be broken down into multiple files for easier transfer.
+>>
+>>---
 >>
 >>**save_centroids : *boolean, default=True***
->>    Whether to save the *centroids* DataFrame object. 
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;Whether to save the *centroids* DataFrame object. 
+>>
+>>---
 >>
 >>**num_parts : *int, default=20***
->>    The number of .csv files to break up the *songs_labeled_* DataFrame into.
->
+>>
+>>    &nbsp;&nbsp;&nbsp;&nbsp;The number of .csv files to break up the *songs_labeled_* DataFrame into.
+>---
 >
 >#### Returns:
 >
@@ -161,7 +203,6 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 
 
 **beat\_master**(*\*\*kwargs*)
->
 >    Runs the entire clustering and saving operation. Accepts *\*\*kwargs* from any function in the Offbeatr class
 >
 >
