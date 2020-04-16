@@ -43,6 +43,7 @@ File that performs acquisition of song data and uses [MiniBatchKMeans](https://s
 >
 >**qt.pickle**
 >    Saves a local file called *'qt.pickle'* that can be used to read in new data using the same transform.
+>
 >---
 >
 >### Attributes:
