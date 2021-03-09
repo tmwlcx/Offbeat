@@ -4,6 +4,7 @@ from sklearn.preprocessing import QuantileTransformer
 from sklearn.cluster import MiniBatchKMeans, AgglomerativeClustering
 import pickle
 from joblib import dump
+import pymysql
 
 
 class Offbeatr(object):
